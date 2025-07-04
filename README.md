@@ -2,7 +2,6 @@ Case Scenario I
 Question 1: Which product category had the highest sales?
 SQL Query:
 
-
 SELECT
     product_category,
     SUM(sales) AS total_sales
