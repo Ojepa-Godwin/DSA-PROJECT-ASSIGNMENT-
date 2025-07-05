@@ -1,517 +1,2669 @@
-### Case Scenario I
-
-#### Question 1: Which product category had the highest sales?
-
-* **SQL Query:**
-    ```sql
-    SELECT
-        product_category,
-        SUM(sales) AS total_sales
-    FROM
-        public.orders
-    GROUP BY
-        product_category
-    ORDER BY
-        total_sales DESC
-    LIMIT 1;
-    ```
-
-* **Result:**
-    ```text
-    product_category | total_sales
-    -----------------+-------------
-    Technology       | 5984248.18
-    ```
-   
-* **Insight/Interpretation:**
-    The analysis reveals that **"Technology"** is the leading product category in terms of sales, generating a significant total revenue of **₦5,984,248.18** (assuming Nigerian Naira currency, adjust if different). This indicates a strong market demand for technology products within Kultra Mega Stores' operations during the 2009-2012 period. Management should consider leveraging this strength, perhaps through targeted promotions or expanding product lines within this category.
-
-
-
-### Case Scenario I
-
-#### Question 2: What are the Top 3 and Bottom 3 regions in terms of sales?
-
-* **SQL Query (Top 3 Regions):**
-    ```sql
-    SELECT
-        region,
-        SUM(sales) AS total_sales
-    FROM
-        public.orders
-    GROUP BY
-        region
-    ORDER BY
-        total_sales DESC
-    LIMIT 3;
-    ```
-
-* **Result (Top 3 Regions):**
-    ```text
-    region             | total_sales
-    -------------------+--------------
-    West               | 3597549.2755
-    Ontario            | 3063212.4795
-    Prarie             | 2837304.6015
-    ```
-
-* **SQL Query (Bottom 3 Regions):**
-    ```sql
-    SELECT
-        region,
-        SUM(sales) AS total_sales
-    FROM
-        public.orders
-    GROUP BY
-        region
-    ORDER BY
-        total_sales ASC
-    LIMIT 3;
-    ```
-
-* **Result (Bottom 3 Regions):**
-    ```text
-    region                  | total_sales
-    ------------------------+--------------
-    Nunavut                 | 116376.4835
-    Northwest Territories   | 800847.3295
-    Yukon                   | 975867.3710
-    ```
-
-* **Insight/Interpretation:**
-    The sales analysis by region highlights significant disparities in revenue generation across different geographical areas. The **"West," "Ontario," and "Prarie"** regions are clearly the top performers, contributing the most to overall sales. This suggests strong market presence and customer base in these areas.
-
-    Conversely, **"Nunavut," "Northwest Territories," and "Yukon"** represent the bottom three regions in terms of sales. Their significantly lower sales figures indicate either a weaker market penetration, lower population density, or specific logistical/economic challenges. KMS management should investigate the reasons behind the low performance in these regions to identify potential areas for growth or, alternatively, to optimize resource allocation if market potential is genuinely limited.
-
-
-
-
-### Case Scenario I
-
-#### Question 3: What were the total sales of appliances in Ontario?
-
-* **SQL Query:**
-    ```sql
-    SELECT
-        SUM(sales) AS total_sales_appliances_ontario
-    FROM
-        public.orders
-    WHERE
-        product_category = 'Appliances' -- Ensure this matches the exact casing/spelling in your data
-        AND province = 'Ontario';       -- Ensure this matches the exact casing/spelling in your data
-    ```
-    *(If you had to adjust the casing in your WHERE clause to get this result, it's good practice to add a small note about that in your `README.md` to show your troubleshooting process, e.g., "Note: Verified 'Appliances' and 'Ontario' casing to match data.")*
-
-* **Result:**
-    ```text
-    total_sales_appliances_ontario
-    ------------------------------
-                       202346.84
-    ```
-
-* **Insight/Interpretation:**
-    The total sales of **Appliances** specifically within the **Ontario** province amount to **₦202,346.84**. This provides a granular view of category performance in a particular region. While "Technology" is the overall highest-selling category, this figure allows KMS management to assess regional demand for specific product types and potentially tailor marketing or inventory strategies for Appliances in Ontario.
-
-
-
-
-#### Question 4: Advise the management of KMS on what to do to increase the revenue from the bottom 10 customers.
-
-* **SQL Query (to identify customers):**
-    ```sql
-    SELECT
-        customer_name,
-        SUM(sales) AS total_customer_sales
-    FROM
-        public.orders
-    GROUP BY
-        customer_name
-    ORDER BY
-        total_customer_sales ASC
-    LIMIT 10;
-    ```
-
-* **Result (Bottom 10 Customer List):**
-    ```text
-    "Jeremy Farry"      | 85.72
-    "Natalie DeCherney" | 125.90
-    "Nicole Fjeld"      | 153.03
-    "Katrina Edelman"   | 180.76
-    "Dorothy Dickinson" | 198.08
-    "Christine Kargatis"| 293.22
-    "Eric Murdock"      | 343.328
-    "Chris McAfee"      | 350.18
-    "Rick Huthwaite"    | 415.82
-    "Mark Hamilton"     | 450.99
-    ```
-
-* **Advice to Management:**
-    To increase revenue from customers like Jeremy Farry, Natalie DeCherney, and others on this list, KMS should consider a targeted approach focusing on engagement and value proposition:
-
-    a.  **Personalized "Re-engagement" Campaigns:**
-        * **Action:** Send personalized emails or SMS messages.
-        * **Content:** Offer small, exclusive discounts (e.g., 5-10% off their next purchase), a special bundle tailored to their past (minimal) purchases, or a "we miss you" offer with a limited-time validity. The goal is to entice them back to make another purchase.
-
-    b.  **Targeted Product Recommendations:**
-        * **Action:** Analyze the types of products these customers *did* buy (even if small purchases).
-        * **Content:** Recommend complementary products, new arrivals in categories they previously showed interest in, or essential office supplies/furniture that are frequently repurchased.
-
-    c.  **Feedback Collection (Surveys):**
-        * **Action:** Reach out to a sample of these customers with a short, incentivized survey (e.g., "Complete this 2-minute survey and get a small discount on your next order").
-        * **Goal:** Understand *why* their spending is low. Is it pricing? Product availability? Customer service experience? Lack of awareness of the full product range? This direct feedback can provide invaluable insights.
-
-    d.  **Introduce or Highlight Loyalty Programs/Benefits:**
-        * **Action:** Clearly communicate the benefits of any KMS loyalty program or highlight advantages of being a regular customer (e.g., free shipping thresholds, exclusive early access to sales).
-        * **Goal:** Provide an incentive for repeat purchases and increased spending.
-
-    e.  **Re-evaluate Customer Segment Alignment:**
-        * **Action:** For each of these customers, confirm their `customer_segment` (Consumer, Retail, Corporate).
-        * **Consideration:** If they are small businesses or corporate clients, perhaps they were one-off purchases or their needs have changed. A targeted sales call might be appropriate for higher-potential segments.
-
-    By understanding the "why" behind their low spending and offering tailored incentives, KMS can potentially convert these low-revenue customers into more valuable, recurring clients.
-
-
-
-#### Question 5: KMS incurred the most shipping cost using which shipping method?
-
-* **SQL Query:**
-    ```sql
-    SELECT
-        ship_mode,
-        SUM(shipping_cost) AS total_shipping_cost_incurred
-    FROM
-        public.orders
-    GROUP BY
-        ship_mode
-    ORDER BY
-        total_shipping_cost_incurred DESC
-    LIMIT 1;
-    ```
-
-* **Result:**
-    ```text
-    ship_mode       | total_shipping_cost_incurred
-    ----------------+------------------------------
-    Delivery Truck  | 51971.94
-    ```
-
-* **Insight/Interpretation:**
-    The analysis shows that **"Delivery Truck"** is the shipping method with the highest total incurred cost for KMS, amounting to **₦51,971.94**. This is an important finding, especially when considering operational efficiency and profitability. While delivery trucks might be preferred for certain types of goods or routes, their cumulative cost suggests they are a significant expense. Management should further investigate the factors contributing to this high cost, such as fuel efficiency, route optimization, maintenance, or labor costs associated with truck deliveries, to identify potential areas for cost reduction.
-
-
-
-
-### Case Scenario II
-
-#### Question 6: Who are the most valuable customers, and what products or services do they typically purchase?
-
-To identify the most valuable customers, we focused on those with the highest total sales. Then, we analyzed their purchasing patterns.
-
-* **SQL Query (Most Valuable Customers by Sales):**
-    ```sql
-    SELECT
-        customer_name,
-        SUM(sales) AS total_customer_sales
-    FROM
-        public.orders
-    GROUP BY
-        customer_name
-    ORDER BY
-        total_customer_sales DESC
-    LIMIT 5;
-    ```
-
-* **Result (Top 5 Most Valuable Customers):**
-    ```text
-    customer_name       | total_customer_sales
-    --------------------+---------------------
-    Emily Phan          | 117124.438
-    Deborah Brumfield   | 97433.1355
-    Roy Skaria          | 92542.1530
-    Sylvia Foulston     | 88875.7575
-    Grant Carroll       | 88417.0025
-    ```
-
-* **SQL Query (Typical Purchases for Top Customers):**
-    ```sql
-    SELECT
-        customer_name,
-        product_category,
-        SUM(sales) AS total_category_sales_for_customer,
-        COUNT(*) AS number_of_orders_in_category
-    FROM
-        public.orders
-    WHERE
-        customer_name IN ('Emily Phan', 'Deborah Brumfield', 'Roy Skaria', 'Sylvia Foulston', 'Grant Carroll')
-    GROUP BY
-        customer_name,
-        product_category
-    ORDER BY
-        customer_name,
-        total_category_sales_for_customer DESC;
-    ```
-
-* **Result (Typical Purchases Breakdown):**
-    ```text
-    customer_name       | product_category  | total_category_sales_for_customer | number_of_orders_in_category
-    --------------------+-------------------+-----------------------------------+------------------------------
-    Deborah Brumfield   | Technology        | 76795.7955                        | 8
-    Deborah Brumfield   | Furniture         | 12809.62                          | 4
-    Deborah Brumfield   | Office Supplies   | 7827.72                           | 8
-    Emily Phan          | Technology        | 110481.968                        | 4
-    Emily Phan          | Furniture         | 4011.65                           | 1
-    Emily Phan          | Office Supplies   | 2630.82                           | 5
-    Grant Carroll       | Office Supplies   | 50837.27                          | 15
-    Grant Carroll       | Furniture         | 29826.85                          | 5
-    Grant Carroll       | Technology        | 7752.8825                         | 7
-    Roy Skaria          | Furniture         | 50177.24                          | 8
-    Roy Skaria          | Technology        | 30349.3930                        | 6
-    Roy Skaria          | Office Supplies   | 12015.52                          | 12
-    Sylvia Foulston     | Furniture         | 48173.380                         | 10
-    Sylvia Foulston     | Technology        | 29669.0375                        | 5
-    Sylvia Foulston     | Office Supplies   | 11033.34                          | 9
-    ```
-
-* **Insight/Interpretation:**
-    The most valuable customers for Kultra Mega Stores are **Emily Phan**, **Deborah Brumfield**, **Roy Skaria**, **Sylvia Foulston**, and **Grant Carroll**, based on their significant total sales contributions.
-
-    Their purchasing patterns show distinct preferences:
-    * **Technology Dominance:** Emily Phan and Deborah Brumfield heavily favor **Technology** products, accounting for a large portion of their overall spending.
-    * **Furniture & Office Supplies:** Grant Carroll shows a strong preference for **Office Supplies** and **Furniture**. Roy Skaria and Sylvia Foulston also make substantial purchases in **Furniture** and **Technology**, with Office Supplies being their third preference.
-
-    **Recommendations for Management:**
-    * **Tailored Offers:** For customers like Emily Phan and Deborah Brumfield, KMS should continue to push new technology products, accessories, and upgrades.
-    * **Cross-selling Opportunities:** For customers like Grant Carroll, Roy Skaria, and Sylvia Foulston, consider cross-selling strategies, perhaps bundling office supplies with furniture, or offering discounts on technology upgrades when they purchase large furniture items.
-    * **Personalized Communication:** Understand the specific needs of these high-value customers and tailor communication and product showcases to their demonstrated preferences.
-
-
-
-#### Question 7: Which small business customer had the highest sales?
-
-* **SQL Query:**
-    ```sql
-    SELECT
-        customer_name,
-        SUM(sales) AS total_customer_sales
-    FROM
-        public.orders
-    WHERE
-        customer_segment = 'Small Business'
-    GROUP BY
-        customer_name
-    ORDER BY
-        total_customer_sales DESC
-    LIMIT 1;
-    ```
-
-* **Result:**
-    ```text
-    customer_name | total_customer_sales
-    --------------+---------------------
-    Dennis Kane   | 75967.5905
-    ```
-
-* **Insight/Interpretation:**
-    **Dennis Kane** is identified as the small business customer with the highest sales, contributing **₦75,967.59** to KMS revenue. This customer is a key asset within the small business segment. Management could consider reaching out to Dennis Kane directly to understand their needs better, offer personalized bulk discounts, or explore opportunities for upselling/cross-selling to further solidify this valuable relationship and potentially use them as a case study for attracting similar high-value small business clients.
-
-
-
-
-#### Question 8: Which Corporate Customer placed the most number of orders in 2009 – 2012?
-
-* **SQL Query:**
-    ```sql
-    SELECT
-        customer_name,
-        COUNT(order_id) AS total_orders_placed
-    FROM
-        public.orders
-    WHERE
-        customer_segment = 'Corporate'
-        AND order_date BETWEEN '2009-01-01' AND '2012-12-31'
-    GROUP BY
-        customer_name
-    ORDER BY
-        total_orders_placed DESC
-    LIMIT 1;
-    ```
-
-* **Result:**
-    ```text
-    customer_name | total_orders_placed
-    --------------+--------------------
-    Adam Hart     | 27
-    ```
-
-* **Insight/Interpretation:**
-    **Adam Hart** is identified as the Corporate Customer who placed the highest number of orders (27) between 2009 and 2012. This indicates Adam Hart is a highly engaged and consistent corporate client for KMS. Management should recognize this customer as a key relationship and explore opportunities for deepened engagement, perhaps through dedicated account management, exclusive previews of new corporate solutions, or loyalty incentives to maintain their high order frequency.
-
-
-
-#### Question 9: Which consumer customer was the most profitable one?
-
-* **SQL Query:**
-    ```sql
-    SELECT
-        customer_name,
-        SUM(profit) AS total_customer_profit
-    FROM
-        public.orders
-    WHERE
-        customer_segment = 'Consumer'
-    GROUP BY
-        customer_name
-    ORDER BY
-        total_customer_profit DESC
-    LIMIT 1;
-    ```
-
-* **Result:**
-    ```text
-    customer_name | total_customer_profit
-    --------------+----------------------
-    Emily Phan    | 34005.44
-    ```
-
-* **Insight/Interpretation:**
-    **Emily Phan** emerges as the most profitable consumer customer for KMS, generating a total profit of **₦34,005.44**. It's noteworthy that Emily Phan also appeared as one of the overall most valuable customers by sales (from Question 6), reinforcing her importance to the business. This indicates a customer who not only purchases frequently but also tends to buy items with higher profit margins. KMS should prioritize retaining and nurturing this relationship, potentially through exclusive offers on high-margin products or personalized communication, to maximize long-term profitability.
-
-
-
-
-#### Question 10: Which customer returned items, and what segment do they belong to?
-
-* **SQL Query:**
-    ```sql
-    SELECT DISTINCT
-        o.customer_name,
-        o.customer_segment
-    FROM
-        public.orders AS o
-    JOIN
-        public.order_status AS os ON o.order_id = os.order_id
-    WHERE
-        os.status = 'Returned';
-    ```
-
-* **Result:**
-    The query returned **419 unique customers** who have returned items. These customers belong to various segments including:
-    * Home Office
-    * Corporate
-    * Small Business
-    * Consumer
-
-    
-    ```text
-    customer_name   | customer_segment
-    ----------------+-----------------
-    Edward Nazzal   | Home Office
-    Cindy Chapman   | Corporate
-    Henry Goldwyn   | Small Business
-    Julie Prescott  | Home Office
-    Liz Willingham  | Home Office
-    ```
-
-* **Insight/Interpretation:**
-    A substantial number of customers, totaling **419 individuals/entities**, have returned items to KMS. These returns are not isolated to a single customer segment but are observed across **Home Office, Corporate, Small Business, and Consumer** segments. This indicates a widespread issue or characteristic behavior rather than a segment-specific problem.
-
-    **Recommendations for Management:**
-    * **Investigate Root Causes:** KMS should delve deeper into the reasons for these returns. Is it due to product quality issues, incorrect orders, late deliveries, product not meeting expectations, or complex return policies? Analyzing `product_id` and `reason` (if available in another table) for returned orders could provide more specific insights.
-    * **Segment-Specific Strategies:** While returns are broad, specific strategies might be needed per segment. For instance, Home Office clients might value clear product descriptions, while Corporate clients might need more accurate bulk order fulfillment.
-    * **Return Policy Review:** Evaluate the existing return policy to ensure it is clear, fair, and not inadvertently encouraging returns.
-    * **Feedback Loop:** Implement a system to capture feedback from customers during the return process to continuously improve products, services, and fulfillment.
-
-
-#### Question 11: If the delivery truck is the most economical but the slowest shipping method and Express Air is the fastest but the most expensive one, do you think the company appropriately spent shipping costs based on the Order Priority? Explain your answer.
-
-* **SQL Query for Analysis:**
-    ```sql
-    SELECT
-        order_priority,
-        ship_mode,
-        SUM(shipping_cost) AS total_shipping_cost_for_priority,
-        COUNT(order_id) AS number_of_orders_for_priority_ship_mode
-    FROM
-        public.orders
-    GROUP BY
-        order_priority,
-        ship_mode
-    ORDER BY
-        order_priority ASC,
-        total_shipping_cost_for_priority DESC;
-    ```
-
-* **Result:**
-    ```text
-    order_priority | ship_mode      | total_shipping_cost_for_priority | number_of_orders_for_priority_ship_mode
-    ---------------+----------------+----------------------------------+-----------------------------------------
-    Critical       | Delivery Truck | 10783.82                         | 228
-    Critical       | Regular Air    | 8586.76                          | 1180
-    Critical       | Express Air    | 1742.10                          | 200
-    High           | Delivery Truck | 11206.88                         | 248
-    High           | Regular Air    | 10005.01                         | 1308
-    High           | Express Air    | 1453.53                          | 212
-    Low            | Delivery Truck | 11131.61                         | 250
-    Low            | Regular Air    | 10263.62                         | 1280
-    Low            | Express Air    | 1551.63                          | 190
-    Medium         | Delivery Truck | 9461.62                          | 205
-    Medium         | Regular Air    | 9418.72                          | 1225
-    Medium         | Express Air    | 1633.59                          | 201
-    Not Specified  | Regular Air    | 9734.08                          | 1277
-    Not Specified  | Delivery Truck | 9388.01                          | 215
-    Not Specified  | Express Air    | 1470.06                          | 180
-    ```
-
-* **Insight/Explanation:**
-    Based on the analysis, it appears that **KMS is NOT optimally or appropriately spending shipping costs based on Order Priority**, particularly for high-priority orders.
-
-    **Key Observations:**
-    a.  **Mismatch for High and Critical Priorities:**
-        * For both "Critical" and "High" priority orders, the **Delivery Truck** (described as the slowest and most economical method) consistently incurs the *highest total shipping cost*. This is counter-intuitive for urgent orders, where speed should theoretically outweigh cost-per-shipment considerations.
-        * The fastest and most expensive method, **Express Air**, consistently has the *lowest total shipping cost* and the *lowest number of orders* across *all* priority levels, including "Critical" and "High". This strongly suggests it is being underutilized for urgent shipments, where its speed would be most beneficial, despite its higher individual cost.
-    b.  **Reliance on Regular Air:** "Regular Air" appears to be the workhorse for all priority levels, handling the vast majority of orders. While this might be a balanced approach for medium to low priorities, its heavy use for "Critical" and "High" orders (despite `Delivery Truck` having higher *total* cost) still implies that the fastest option (Express Air) is not being chosen when urgency is paramount.
-    c.  **Appropriate for Low/Medium/Not Specified:** For "Low," "Medium," and "Not Specified" priorities, the higher usage and total cost for "Delivery Truck" and "Regular Air" are more justifiable, as these orders are less time-sensitive, and cost efficiency would be a higher priority.
-
-    **Conclusion and Recommendations:**
-    The current spending pattern indicates a potential disconnect between stated order priority and the chosen shipping method. KMS might be sacrificing delivery speed for urgent orders to save on per-shipment costs, which could negatively impact customer satisfaction for critical deliveries.
-
-    Management should:
-    * **Review Shipping Policies:** Establish clearer guidelines for selecting shipping methods based on Order Priority, ensuring that "Critical" and "High" priority orders are consistently routed via faster (even if individually more expensive) options like "Express Air."
-    * **Cost-Benefit Analysis for Urgency:** Conduct a detailed cost-benefit analysis comparing the increased shipping cost of "Express Air" for critical orders against the potential loss of customer satisfaction, repeat business, or contractual penalties due to slow delivery.
-    * **Optimize Delivery Truck Use:** While economical, if "Delivery Truck" has the highest *total* cost for urgent orders, it may indicate inefficiencies in routing, capacity utilization, or a need to shift some of these urgent orders to faster, albeit pricier, modes.
-
-
-
-
-## 4. Key Findings & Recommendations
-
-This sales and order analysis for Kultra Mega Stores (KMS) from 2009 to 2012 provides critical insights into sales performance, customer behavior, and operational efficiency across various segments and regions.
-
-### Key Findings:
-
-* **Dominant Product Category:** **Technology** emerged as the highest-selling product category, indicating strong market demand and a core revenue driver for KMS.
-* **Regional Performance Disparities:** Sales are highly concentrated, with **"West," "Ontario," and "Prarie"** being the top-performing regions, while **"Nunavut," "Northwest Territories," and "Yukon"** significantly lag behind, highlighting uneven market penetration.
-* **High-Value Customer Profiles:**
-    * **Emily Phan** stands out as both the **most valuable overall customer by sales** and the **most profitable consumer customer**, making her a crucial asset. Her primary purchases are in **Technology**.
-    * **Deborah Brumfield** (Technology) is another top valuable customer.
-    * **Grant Carroll** primarily drives sales in **Office Supplies** and **Furniture**.
-    * **Dennis Kane** is the top-performing customer within the **Small Business** segment.
-    * **Adam Hart** placed the most orders among **Corporate** customers, demonstrating consistent engagement.
-* **Customer Retention Opportunity (Bottom Performers):** A defined group of **bottom 10 customers** contributes minimally to revenue, suggesting potential for targeted re-engagement.
-* **Significant Returns Activity:** A considerable number of customers (**419 unique customers**) across all segments (Consumer, Corporate, Small Business, Home Office) have returned items, indicating a potentially widespread issue in product satisfaction or fulfillment.
-* **Suboptimal Shipping Cost Management:** Despite "Delivery Truck" being the slowest and most economical, it incurs the highest *total* shipping costs for **"Critical" and "High" priority orders**. Conversely, "Express Air" (fastest, most expensive) is significantly underutilized for these urgent shipments. This suggests a disconnect between order priority and shipping method selection.
-
-### Overall Recommendations:
-
-a.  **Capitalize on Strengths:**
-    * **Invest in Technology Segment:** Continue to prioritize inventory, marketing, and new product introductions within the Technology category, leveraging its high demand and profitability.
-    * **Deepen Engagement with Top Customers:** Implement personalized loyalty programs, exclusive offers, and dedicated account management for high-value customers like Emily Phan, Deborah Brumfield, Dennis Kane, and Adam Hart, tailored to their specific purchasing behaviors.
-
-b.  **Address Underperforming Areas:**
-    * **Regional Strategy Review:** Investigate the reasons for low sales in regions like Nunavut, Northwest Territories, and Yukon. This might involve market research, targeted marketing campaigns, or re-evaluation of logistical feasibility.
-    * **Bottom Customer Re-engagement:** Develop specific re-engagement campaigns (e.g., targeted discounts, personalized recommendations, feedback surveys) to encourage repeat purchases from low-revenue customers.
-
-c.  **Optimize Operations & Customer Satisfaction:**
-    * **Investigate Return Root Causes:** Conduct a comprehensive analysis of returned items to identify underlying issues (e.g., product quality, inaccurate descriptions, fulfillment errors) and develop strategies to reduce return rates across all customer segments.
-    * **Refine Shipping Strategy:** Re-evaluate the shipping method selection process, particularly for high-priority orders. Ensure that faster, more appropriate shipping methods (like Express Air) are utilized for "Critical" and "High" priority orders, even if individual costs are higher, to maintain customer satisfaction and service level agreements. A detailed cost-benefit analysis comparing expedited shipping with customer retention and satisfaction should be performed.
-    * **Data-Driven Decision Making:** Continuously monitor key performance indicators (KPIs) related to sales, customer segments, shipping costs, and returns to ensure ongoing strategic alignment and identify new opportunities or challenges.
+[sum total of amounty to be paid employees including bonuces.csv](https://github.com/user-attachments/files/21071241/sum.total.of.amounty.to.be.paid.employees.including.bonuces.csv)[total bonus paid to individuals.csv](https://github.com/user-attachments/files/21071237/total.bonus.paid.to.individuals.csv)[Salary Band by Location.csv](https://github.com/user-attachments/files/21071117/Salary.Band.by.Location.csv)[destribution of employees grouped by a band of 10k to 20k.csv](https://github.com/user-attachments/files/21071115/destribution.of.employees.grouped.by.a.band.of.10k.to.20k.csv)[GENDER pay gap.csv](https://github.com/user-attachments/files/21071032/GENDER.pay.gap.csv)[GENDER DISTRIBUTION.csv](https://github.com/user-attachments/files/21070844/GENDER.DISTRIBUTION.csv)#CASE OVERVIEW
+
+**The Palmoria Group, a manufacturing company based in Nigeria, is embroiled in issues 
+bordering on gender inequality in its 3 regions. Unfortunately, the media recently 
+published the news with the headline “Palmoria, the Manufacturing Patriarchy”. This 
+doesn’t look good for the owners of the business, based on their ambition to scale the 
+business to other regions and even overseas. Cases like this can only spiral downwards, 
+revealing other issues like the gender pay gap, amongst other possible issues**
+*Using the case scenarios, I answerd all the questions thus:
+
+#1. What is the gender distribution in the organization? Distil to regions and 
+departments
+
+*[UploadingLocation,Count of Gender
+Kaduna,361
+Abuja,335
+Lagos,250
+ GENDER DISTRIBUTION.csv…]()
+
+ #2.Show insights on ratings based on gender
+ *[RATINGS BASED ON GENDER.csv](https://github.com/user-attachments/files/21070903/RATINGS.BASED.ON.GENDER.csv)
+
+
+#3. Analyse the company’s salary structure. Identify if there is a gender pay gap. If there is, identify the department and regions that should be the focus ofmanagement
+[UploadGender,Count of Name,Location
+Male,182,Kaduna
+Female,165,Kaduna
+Male,159,Abuja
+Female,158,Abuja
+Male,124,Lagos
+Female,118,Lagos
+Undisclosed,18,Abuja
+Undisclosed,14,Kaduna
+Undisclosed,8,Lagos
+ing GENDER pay gap.csv…]()
+
+
+*4. A recent regulation was adopted which requires manufacturing* companies to pay 
+employees a minimum of $90,000 
+● Does Palmoria meet this requirement? 
+** From the case study, i deduced that Palmoria does not meet the requirement because she pays her employees lower than 90,000
+● Show the pay distribution of employees grouped by a band of $10,000. For example: 
+[UploadName,Sum of Salary,Salary Band
+Abbie Tann,$116520,$100K+
+Abigael Basire,$123240,$60K-$70K
+Abramo Labbez,$77000,$70K-$80K
+Abran Danielsky,$32720,$30K-$40K
+Addi Studdeard,$145000,$70K-$80K
+Addia Penwright,$28130,$20K-$30K
+Addy Pimblett,$66460,$60K-$70K
+Adela Dowsett,$95020,$90K-$100K
+Adelina Cheeseman,$45510,$40K-$50K
+Adella Hartshorne,$82320,$40K-$50K
+Adey Ryal,$32500,$30K-$40K
+Adi Seawright,$48590,$40K-$50K
+Adolph Hartin,$89960,$80K-$90K
+Adolph McNalley,$85920,$80K-$90K
+Adrianne Gave,$78440,$70K-$80K
+Aeriela Aickin,$37550,$30K-$40K
+Aeriell Cuell,$108290,$100K+
+Agnes Collicott,$83750,$80K-$90K
+Aida Bleacher,$87810,$80K-$90K
+Aile Strathearn,$114600,$100K+
+Aileen McCritchie,$80170,$80K-$90K
+Aindrea Lenormand,$71180,$70K-$80K
+Aldrich Glenny,$181760,$90K-$100K
+Aleksandr Botha,$60260,$60K-$70K
+Alexandros Rackley,$75730,$70K-$80K
+Alexine Portail,$60330,$60K-$70K
+Alexis Gotfrey,$114470,$100K+
+Alford Gerardi,$37130,$30K-$40K
+Alfred Peplay,$121160,$60K-$70K
+Ali Roubert,$69460,$60K-$70K
+Alic Bagg,$113750,$100K+
+Alicea Pudsall,$67630,$60K-$70K
+Alida Welman,$139720,$60K-$70K
+Alikee Jecock,$85000,$80K-$90K
+Alisha Bloschke,$36480,$30K-$40K
+Allene Gobbet,$78390,$70K-$80K
+Allyce Hincham,$101420,$100K+
+Aloisia Minto,$41420,$40K-$50K
+Alta Kaszper,$54970,$50K=$60K
+Althea Bronger,$208680,$100K+
+Aluin Churly,$96560,$90K-$100K
+Alvie Keming,$37840,$30K-$40K
+Alyosha Riquet,$89840,$80K-$90K
+Alysa Wankling,$106460,$100K+
+Amaleta Baltzar,$70080,$70K-$80K
+Amandy Jope,$99630,$90K-$100K
+Ambros Murthwaite,$70610,$70K-$80K
+Ambrosio Daniely,$80060,$80K-$90K
+Amery Ofer,$111050,$100K+
+Amii Elms,$53920,$50K=$60K
+Amitie Mawson,$116500,$100K+
+Anabal Cooke,$31920,$30K-$40K
+Ancell Moretto,$96920,$90K-$100K
+Andrea Becker,$46160,$40K-$50K
+Andrea Penfold,$70230,$70K-$80K
+Andria Kimpton,$138240,$60K-$70K
+Angela Bangley,$50810,$50K=$60K
+Angeline Christophersen,$173880,$80K-$90K
+Anjanette Ferre,$67960,$60K-$70K
+Anjela Spancock,$98010,$90K-$100K
+Anne-corinne Daulby,$78640,$70K-$80K
+Anni Dinse,$239340,$100K+
+Anni Izzard,$103490,$100K+
+Ansley Gounel,$76880,$30K-$40K
+Antone Tolmie,$110820,$100K+
+Antonetta Coggeshall,$96750,$90K-$100K
+Antonino Forsdicke,$132740,$60K-$70K
+Appolonia Snook,$93880,$90K-$100K
+Archaimbaud Pinchin,$40270,$40K-$50K
+Archibald Dyzart,$63020,$60K-$70K
+Archibald Filliskirk,$40400,$40K-$50K
+Archibaldo Denny,$69740,$60K-$70K
+Ardella Dyment,$70650,$70K-$80K
+Ardyce Eacott,$92470,$90K-$100K
+Aretha Ettridge,$33760,$30K-$40K
+Arty Duigan,$108600,$100K+
+Ashien Gallen,$115080,$100K+
+Aubert Wedmore.,$61330,$60K-$70K
+Audry Yu,$101190,$100K+
+Augusta Cheetham,$105470,$100K+
+Aurelea Devitt,$58840,$50K=$60K
+Aurelia Stanners,$98630,$90K-$100K
+Austine Littlewood,$32270,$30K-$40K
+Ava Whordley,$104210,$100K+
+Avigdor Karel,$71210,$70K-$80K
+Axel Grigaut,$110780,$100K+
+Barbara-anne Kenchington,$176060,$80K-$90K
+Bari Toffano,$106780,$100K+
+Barnaby Farnall,$118800,$100K+
+Barney Bonafant,$48060,$40K-$50K
+Barny Fairweather,$77130,$70K-$80K
+Barr Faughny,$68010,$60K-$70K
+Barri Teacy,$86240,$80K-$90K
+Baudoin Dummigan,$114510,$100K+
+Baxter Brocks,$39680,$30K-$40K
+Bayard Gendricke,$40980,$40K-$50K
+Beatrix Schoales,$114010,$100K+
+Beatriz Bateson,$89090,$80K-$90K
+Bebe Pollicott,$87740,$80K-$90K
+Bendite Bloan,$31820,$30K-$40K
+Bennett Gimenez,$36460,$30K-$40K
+Benni Simounet,$115790,$100K+
+Benny Karolovsky,$115440,$100K+
+Benoite Ackermann,$57080,$50K=$60K
+Berenice Osbaldstone,$58280,$50K=$60K
+Berna Dubery,$69730,$60K-$70K
+Bernie Gorges,$99970,$90K-$100K
+Berny Bastide,$56710,$50K=$60K
+Bert Yaakov,$72040,$70K-$80K
+Beryl Burnsyde,$59540,$20K-$30K
+Bethanne Leicester,$72450,$70K-$80K
+Bette-ann Leafe,$93500,$90K-$100K
+Bev Lashley,$112110,$100K+
+Beverie Moffet,$151940,$70K-$80K
+Bili Sizey,$36040,$30K-$40K
+Billi Fellgate,$68980,$60K-$70K
+Billie Croucher,$75230,$70K-$80K
+Blaire Ruckman,$61700,$60K-$70K
+Blythe Clipston,$35670,$30K-$40K
+Bobina Teale,$116890,$100K+
+Bogey Hitcham,$212340,$100K+
+Bordy Yatman,$108450,$100K+
+Brad Gumb,$38830,$30K-$40K
+Bren Absolon,$74710,$70K-$80K
+Brendan Edgeller,$31040,$30K-$40K
+Brien Boise,$58100,$50K=$60K
+Brig Dewi,$108250,$100K+
+Brigid Jeffrey,$53910,$50K=$60K
+Brit Hamnett,$75540,$70K-$80K
+Brodie Grimstead,$117850,$100K+
+Brose MacCorkell,$71880,$30K-$40K
+Bryana Loyns,$55280,$50K=$60K
+Bryant Scamp,$29810,$20K-$30K
+Burtie Moulden,$116220,$100K+
+Callie Duckels,$53760,$50K=$60K
+Calvin O'Carroll,$88900,$40K-$50K
+Camilla Castle,$75480,$70K-$80K
+Camille Baldinotti,$41700,$40K-$50K
+Candace Hanlon,$46280,$40K-$50K
+Candy Aindrais,$116590,$100K+
+Cara Havers,$179220,$80K-$90K
+Caresa Christer,$59260,$50K=$60K
+Caritta Searl,$54010,$50K=$60K
+Carlene Torry,$59610,$50K=$60K
+Carlin Demke,$110040,$100K+
+Carmel Pancoust,$119550,$100K+
+Caro Chappel,$104410,$100K+
+Caro Hainsworth,$77470,$70K-$80K
+Carolin Fieldstone,$36920,$30K-$40K
+Carolina Blumsom,$28580,$20K-$30K
+Carolyn Attack,$70760,$70K-$80K
+Caron Kolakovic,$49920,$40K-$50K
+Carry Loblie,$47550,$40K-$50K
+Cathi Delgardo,$223820,$100K+
+Cathi Gillbee,$41790,$40K-$50K
+Cathrin Yanuk,$44120,$40K-$50K
+Cathyleen Hurch,$49390,$40K-$50K
+Caty Janas,$93210,$90K-$100K
+Cecilia Marshalleck,$118980,$100K+
+Cecilio Sprankling,$109710,$100K+
+Cecilla Joselevitch,$77840,$70K-$80K
+Cecilla Northen,$92870,$90K-$100K
+Chancey Dyos,$118060,$100K+
+Charline Husset,$94530,$90K-$100K
+Charmaine Howie,$56810,$50K=$60K
+Charmane Heistermann,$86560,$80K-$90K
+Chas Happel,$30940,$30K-$40K
+Chauncey Schild,$214680,$100K+
+Chelsea Itzak,$61100,$60K-$70K
+Cherlyn Barter,$104120,$100K+
+Cheryl Mantz,$35740,$30K-$40K
+Ches Bonnell,$88050,$80K-$90K
+Christoph Stretton,$90240,$90K-$100K
+Christopher Kezourec,$55310,$50K=$60K
+Christos Wintle,$74360,$70K-$80K
+Chrisy Kyme,$99200,$90K-$100K
+Cindee Saice,$103360,$100K+
+Cindi McDuffy,$87930,$80K-$90K
+Cindi Stratten,$99200,$90K-$100K
+Clarine Shambrooke,$93160,$90K-$100K
+Claudetta Petherick,$54520,$50K=$60K
+Clemmie Hebblewaite,$54130,$50K=$60K
+Cletus McGarahan,$228860,$100K+
+Cleveland Pottiphar,$74600,$70K-$80K
+Clo Jimpson,$115240,$50K=$60K
+Cly Vizard,$51520,$50K=$60K
+Codi Beck,$40560,$40K-$50K
+Codie Gaunson,$83590,$80K-$90K
+Colby Reuven,$101790,$100K+
+Collen Dunbleton,$118980,$100K+
+Collette Blackaller,$42380,$40K-$50K
+Collin Jagson,$100420,$100K+
+Colly Littledike,$117150,$100K+
+Conchita Soden,$74410,$70K-$80K
+Constantino Espley,$96800,$90K-$100K
+Corabel Luberto,$57820,$50K=$60K
+Cordelia Djuricic,$65350,$60K-$70K
+Corina Triner,$66100,$60K-$70K
+Corinna Griffiths,$75010,$70K-$80K
+Cornie Arstall,$69970,$60K-$70K
+Corny Linturn,$47960,$40K-$50K
+Courtney Given,$43600,$40K-$50K
+Craggie Whistlecraft,$71240,$70K-$80K
+Crawford Scad,$145760,$70K-$80K
+Crissie Cordel,$41570,$40K-$50K
+Cristal Demangeot,$144700,$70K-$80K
+Cull Nannetti,$68090,$60K-$70K
+Cullie Bourcq,$45590,$40K-$50K
+Curtice Advani,$119620,$50K=$60K
+Cyndia Skedge,$52630,$50K=$60K
+Cyril Medford,$85720,$80K-$90K
+Cyrillus Garci,$100360,$100K+
+Dael Bugge,$62690,$60K-$70K
+Daisie Dahlman,$61990,$60K-$70K
+Daisie McNeice,$50310,$50K=$60K
+Damien Netley,$98110,$90K-$100K
+Dane Wudeland,$80030,$80K-$90K
+Danica Nayshe,$179380,$80K-$90K
+Danielle Johananoff,$109040,$100K+
+Daphne Francillo,$63370,$60K-$70K
+Darcy Brewitt,$116670,$100K+
+Dare Tully,$39780,$30K-$40K
+Daron Biaggioli,$112550,$100K+
+Daryn Kniveton,$108390,$100K+
+Daven Smout,$50800,$50K=$60K
+Dayle O'Luney,$93500,$40K-$50K
+De witt Lottrington,$98360,$90K-$100K
+Dean Biggam,$71570,$70K-$80K
+Debera Gow,$39700,$30K-$40K
+Deck McCallion,$33890,$30K-$40K
+Delinda Snozzwell,$134020,$60K-$70K
+Dell Molloy,$47360,$40K-$50K
+Delora Arendt,$67620,$60K-$70K
+Delphine Jewis,$71820,$70K-$80K
+Demetria Le Estut,$75720,$70K-$80K
+Denni Wiggans,$81220,$80K-$90K
+Dennison Crosswaite,$90700,$90K-$100K
+Derk Bosson,$75870,$70K-$80K
+Desi Peniman,$62180,$30K-$40K
+Devinne Tuny,$39970,$30K-$40K
+Dewie Stodart,$78020,$70K-$80K
+Diarmid Alman,$98200,$90K-$100K
+Dino Wooderson,$52120,$50K=$60K
+Dionne Garrish,$41600,$40K-$50K
+Doe Clubley,$67820,$60K-$70K
+Dolley Grayley,$48980,$40K-$50K
+Dominic Ortler,$66610,$60K-$70K
+Doralyn Segar,$30000,$30K-$40K
+Dorise Labat,$101610,$100K+
+Doro Nolte,$109050,$100K+
+Dorolice Farry,$76300,$70K-$80K
+Dotty Strutley,$41980,$40K-$50K
+Dov Thoresby,$115490,$100K+
+Drusy MacCombe,$43510,$40K-$50K
+Duffie Ibel,$61010,$60K-$70K
+Duky Wallace,$102140,$100K+
+Dulsea Folkes,$84320,$40K-$50K
+Durand Backhouse,$83400,$80K-$90K
+Dyanne Strafen,$113800,$100K+
+Dyna Doucette,$103550,$100K+
+Easter Pyke,$191360,$90K-$100K
+Eberto William,$57750,$50K=$60K
+Ebonee Roxburgh,$67950,$60K-$70K
+Edd MacKnockiter,$119020,$100K+
+Eddy Stolze,$47760,$40K-$50K
+Ede Mignot,$98640,$90K-$100K
+Edgard Irving,$87290,$80K-$90K
+Edi Hofton,$28160,$20K-$30K
+Effie Vasilov,$60010,$60K-$70K
+Efrem Mathonnet,$107020,$100K+
+Egor Minto,$63450,$60K-$70K
+Eilis Pavlasek,$115190,$100K+
+Eldredge MacClure,$46990,$40K-$50K
+Eleni O'Quin,$89020,$80K-$90K
+Eleonore Airdrie,$97110,$90K-$100K
+Elia Cockton,$75280,$70K-$80K
+Elliot Tuplin,$44530,$40K-$50K
+Elwira Lyddiard,$31280,$30K-$40K
+Emanuel Beldan,$94070,$90K-$100K
+Emmanuel Westrey,$87400,$80K-$90K
+Emmeline Bestwerthick,$38240,$30K-$40K
+Emmye Corry,$109030,$100K+
+Emory Whitten,$52000,$50K=$60K
+Enrichetta Mowles,$74390,$70K-$80K
+Erin Androsik,$97060,$40K-$50K
+Ernestus O'Hengerty,$31020,$30K-$40K
+Erv Balmann,$29670,$20K-$30K
+Erv Havill,$106080,$100K+
+Esmaria Denecamp,$48980,$40K-$50K
+Estell Kingsland,$32190,$30K-$40K
+Euell Willoughley,$105800,$100K+
+Evangelia Gowers,$118450,$100K+
+Evangelina Lergan,$61210,$60K-$70K
+Evanne Levens,$36880,$30K-$40K
+Evanne Sheryn,$81900,$80K-$90K
+Evyn Fyrth,$90080,$90K-$100K
+Eward Astlett,$41670,$40K-$50K
+Ewart Hovel,$116770,$100K+
+Ewart Laphorn,$119110,$100K+
+Faina Durand,$114650,$100K+
+Fairfax Wallsam,$88590,$80K-$90K
+Fanchon Furney,$95950,$90K-$100K
+Fancy Bonin,$84680,$80K-$90K
+Farrel Vanyatin,$118120,$100K+
+Farris Ditchfield,$58030,$50K=$60K
+Faun Rickeard,$74920,$70K-$80K
+Faunie Sinton,$115230,$100K+
+Fax Scotland,$57640,$50K=$60K
+Fedora Graffin,$92500,$90K-$100K
+Felicdad Heibel,$60800,$60K-$70K
+Felice McMurty,$66870,$60K-$70K
+Felipe Parkman,$90150,$90K-$100K
+Felita Whitloe,$63450,$60K-$70K
+Ferrell Skepper,$30250,$30K-$40K
+Fidela Artis,$78020,$70K-$80K
+Fidela Dowey,$86740,$80K-$90K
+Fidelio Rigmond,$96370,$90K-$100K
+Filmore Fitzhenry,$108170,$100K+
+Floria Olivia,$101500,$100K+
+Florie Tortoise,$35930,$30K-$40K
+Florinda Crace,$45510,$40K-$50K
+Floyd Cowgill,$37060,$30K-$40K
+Fonzie O'Shea,$80360,$80K-$90K
+Forester Feakins,$47290,$40K-$50K
+Foss Asquez,$184380,$90K-$100K
+Franchot Crocken,$29610,$20K-$30K
+Francoise Godbold,$46350,$40K-$50K
+Frasier Straw,$71370,$70K-$80K
+Frasquito Mosley,$48090,$40K-$50K
+Fred Dudeney,$177380,$80K-$90K
+Freda Legan,$102130,$100K+
+Freddie Johnikin,$64960,$60K-$70K
+Freddy Linford,$93130,$90K-$100K
+Frederik Dartan,$62090,$60K-$70K
+Gabie Millichip,$49760,$40K-$50K
+Gamaliel Ewins,$119660,$100K+
+Gardy Eckersall,$79650,$70K-$80K
+Gardy Grigorey,$107090,$100K+
+Gare Mattiussi,$32500,$30K-$40K
+Garey Bird,$31830,$30K-$40K
+Garrick Hadwick,$117810,$100K+
+Garwin Peasegood,$68220,$60K-$70K
+Garwood Penhale,$96640,$90K-$100K
+Gaultiero Have,$115380,$100K+
+Gavan Puttan,$35940,$30K-$40K
+Gayla Blackadder,$109170,$100K+
+Gearard Wixon,$106190,$100K+
+Genevra Friday,$50450,$50K=$60K
+Genovera Ghost,$72160,$70K-$80K
+Georg Dinnage,$176660,$80K-$90K
+Georgianne Archbutt,$45600,$40K-$50K
+Georgie Caress,$58260,$50K=$60K
+Gerald Caple,$59300,$50K=$60K
+Gerrard Doorey,$110200,$100K+
+Giacobo Donke,$118360,$100K+
+Gideon Hehir,$66510,$60K-$70K
+Giffer Berlin,$92340,$90K-$100K
+Gigi Bohling,$74550,$70K-$80K
+Gilda Richen,$71920,$70K-$80K
+Gilles Jaquet,$152600,$70K-$80K
+Ginger Myott,$31170,$30K-$40K
+Gino Groome,$60440,$60K-$70K
+Gisela Wille,$58850,$50K=$60K
+Giselbert Newlands,$47650,$40K-$50K
+Gisella Mewe,$109760,$100K+
+Glennis Fussen,$58370,$50K=$60K
+Gradey Litton,$68890,$60K-$70K
+Grady Crosgrove,$77910,$70K-$80K
+Grady Rochelle,$69160,$60K-$70K
+Granny Spencelayh,$99460,$90K-$100K
+Granville Stetson,$111190,$100K+
+Gray Seamon,$78540,$70K-$80K
+Gretchen Callow,$33920,$30K-$40K
+Grier Kidsley,$51800,$50K=$60K
+Griz Thorington,$47670,$40K-$50K
+Grover Cooksey,$74620,$70K-$80K
+Gunar Cockshoot,$48950,$40K-$50K
+Gwenore Scotchmer,$105290,$100K+
+Halette Yesenev,$61920,$60K-$70K
+Hali Behnecke,$65570,$60K-$70K
+Halimeda Kuscha,$112570,$100K+
+Hannis January,$29530,$20K-$30K
+Hans Bucke,$78560,$70K-$80K
+Hartwell Pratchett,$42730,$40K-$50K
+Harwilll Domotor,$112370,$100K+
+Hatti Vezey,$116240,$100K+
+Haven Belward,$89120,$80K-$90K
+Hector Isard,$116970,$100K+
+Hedvige Stelfox,$33800,$30K-$40K
+Hedwiga Ingarfield,$38250,$30K-$40K
+Helaine Lyddy,$103110,$100K+
+Helene Bouts,$70380,$70K-$80K
+Hephzibah Summerell,$28310,$20K-$30K
+Herschel Wareham,$110830,$100K+
+Hildagard Reece,$41220,$40K-$50K
+Hilliary Roarty,$104770,$100K+
+Hinda Label,$92700,$90K-$100K
+Hiram Merkle,$232180,$100K+
+Hobard Benninger,$86920,$80K-$90K
+Hobie Stockbridge,$92940,$90K-$100K
+Hogan Iles,$114180,$100K+
+Honoria Cootes,$115640,$100K+
+Hoyt D'Alesco,$53540,$50K=$60K
+Husein Augar,$67910,$60K-$70K
+Hyacinthie Braybrooke,$68900,$60K-$70K
+Iain Wiburn,$84760,$80K-$90K
+Ianthe Sayre,$110730,$100K+
+Ignacio Delion,$113690,$100K+
+Ignacius Losel,$56960,$20K-$30K
+Inge Creer,$69060,$60K-$70K
+Inger Andriveaux,$107110,$100K+
+Inger Chapelhow,$168620,$80K-$90K
+Ingunna Wainscoat,$73240,$70K-$80K
+Irena Trousdell,$29530,$20K-$30K
+Irvine Blenkin,$79590,$70K-$80K
+Irwin Kirsche,$36150,$30K-$40K
+Isa Mogie,$50950,$50K=$60K
+Isaak Rawne,$37360,$30K-$40K
+Isadora Maunsell,$78490,$70K-$80K
+Isidora Guido,$43150,$40K-$50K
+Israel Farndon,$107220,$100K+
+Issiah Cradick,$81380,$80K-$90K
+Issie Crippes,$81720,$80K-$90K
+Issy McLevie,$84940,$80K-$90K
+Itch Tinklin,$77110,$70K-$80K
+Izzy Brisco,$108080,$100K+
+Jacklyn Andrioletti,$86990,$80K-$90K
+Jacobo Lasham,$51320,$50K=$60K
+Jaime Dowe,$39940,$30K-$40K
+Jakob Philippe,$51910,$50K=$60K
+Jamal Beagen,$35830,$30K-$40K
+Jamesy O'Ferris,$36550,$30K-$40K
+Jan Morforth,$48170,$40K-$50K
+Janaya MacGinlay,$33050,$30K-$40K
+Janean Gostage,$81150,$80K-$90K
+Janene Hairsine,$104770,$100K+
+Janina Wolverson,$99680,$90K-$100K
+Jannel Labb,$47910,$40K-$50K
+Jarad Barbrook,$31200,$30K-$40K
+Jeane Bermingham,$116980,$100K+
+Jeane Blaszczak,$88600,$40K-$50K
+Jeannie Petracco,$94820,$90K-$100K
+Jedd Moretto,$63720,$60K-$70K
+Jehu Rudeforth,$60130,$60K-$70K
+Jermaine Steers,$35440,$30K-$40K
+Jessi Calterone,$38520,$30K-$40K
+Jessica Burditt,$97120,$90K-$100K
+Jessica Callcott,$66020,$60K-$70K
+Jessika Jaycocks,$67980,$60K-$70K
+Jill Shipsey,$52960,$50K=$60K
+Jillana Gabbitis,$91360,$90K-$100K
+Jim Perrygo,$96790,$90K-$100K
+Jo Benoi,$117520,$100K+
+Joana Bartocci,$105340,$50K=$60K
+Jo-anne Gobeau,$37900,$30K-$40K
+Joaquin McVitty,$68860,$60K-$70K
+Jobey Boneham,$74010,$70K-$80K
+Jobie Basili,$39340,$30K-$40K
+Joella Maevela,$152420,$70K-$80K
+Joey Keedwell,$107440,$100K+
+Joli Jodrelle,$77100,$70K-$80K
+Jolynn Behnecken,$85180,$80K-$90K
+Jolynn Lumbley,$70020,$70K-$80K
+Jordain Cyster,$75870,$70K-$80K
+Jordain Sparkwill,$107660,$100K+
+Jori Ashleigh,$64270,$60K-$70K
+Josepha Keningham,$42990,$40K-$50K
+Joshia Farris,$36740,$30K-$40K
+Josie Barnson,$74110,$70K-$80K
+Joyce Esel,$202780,$100K+
+Joyce Leyband,$68200,$60K-$70K
+Juanita Trembey,$54780,$50K=$60K
+Judi Cosgriff,$86390,$80K-$90K
+Judie Di Bernardo,$117150,$100K+
+Juditha Hatherleigh,$34830,$30K-$40K
+Julian Andrassy,$113980,$100K+
+Justino Chapiro,$71030,$70K-$80K
+Kai Ryder,$119930,$100K+
+Kaine Padly,$107700,$100K+
+Kakalina Stanaway,$97020,$90K-$100K
+Karee Ruslinge,$82300,$80K-$90K
+Karita Vasyanin,$93080,$90K-$100K
+Karlen McCaffrey,$71230,$70K-$80K
+Karon Oscroft,$112120,$100K+
+Karyn Creeghan,$36540,$30K-$40K
+Katerine Lohden,$115090,$100K+
+Katey Cadany,$92010,$90K-$100K
+Kath Bletsoe,$65700,$60K-$70K
+Katya Hundy,$177020,$80K-$90K
+Kay Edling,$38330,$30K-$40K
+Kaye Crocroft,$52610,$50K=$60K
+Kayley Southwell,$101670,$100K+
+Kelci Walkden,$57090,$50K=$60K
+Kelley Rounds,$114810,$100K+
+Kellsie Waby,$79570,$70K-$80K
+Kelly Corkitt,$85260,$80K-$90K
+Kerwin Blakely,$68480,$60K-$70K
+Kienan Epinay,$91120,$90K-$100K
+Kikelia Ellor,$34620,$30K-$40K
+Kincaid Hellicar,$96610,$90K-$100K
+Kingsley Hagard,$32810,$30K-$40K
+Kissiah Maydway,$212920,$100K+
+Kit Battlestone,$115980,$100K+
+Konstantin Timblett,$56250,$50K=$60K
+Konstanze Wyleman,$90800,$90K-$100K
+Kora Allebone,$98970,$90K-$100K
+Koral Gerriet,$30080,$30K-$40K
+Korney Bockings,$40530,$40K-$50K
+Kristofor Powner,$69340,$60K-$70K
+Krysta Elacoate,$213860,$100K+
+Krystal Lambswood,$83200,$40K-$50K
+L;urette Bontein,$47650,$40K-$50K
+Lamar Blewitt,$41910,$40K-$50K
+Lamond Douthwaite,$90530,$90K-$100K
+Lane Monteaux,$109980,$100K+
+Laney Renne,$57350,$50K=$60K
+Lanie Gatlin,$45110,$40K-$50K
+Lanny Beaney,$38730,$30K-$40K
+Larissa Ingledow,$62280,$60K-$70K
+Lark Ironmonger,$85780,$80K-$90K
+Larry Pioch,$99340,$40K-$50K
+Latisha Jolly,$58400,$50K=$60K
+Laura Gomar,$36860,$30K-$40K
+Layton Crayden,$40450,$40K-$50K
+Layton Kierans,$113790,$100K+
+Lea Chaplin,$73490,$70K-$80K
+Leela Eckart,$90340,$90K-$100K
+Leena Bruckshaw,$74280,$70K-$80K
+Leilah Yesinin,$92450,$90K-$100K
+Lek Scamaden,$51860,$50K=$60K
+Leonidas Cavaney,$52250,$50K=$60K
+Leslie Baruch,$103990,$100K+
+Leslie Cardoso,$103340,$100K+
+Letisha Carrett,$84600,$80K-$90K
+Letizia Hasselby,$61790,$60K-$70K
+Lezlie Balmann,$112460,$100K+
+Lia Lurner,$77260,$70K-$80K
+Liane Bedburrow,$76620,$70K-$80K
+Lil Ibberson,$75920,$70K-$80K
+Lilyan Klimpt,$58960,$50K=$60K
+Lincoln Cord,$63560,$60K-$70K
+Lincoln Greatex,$34650,$30K-$40K
+Lindi Morfey,$99470,$90K-$100K
+Lindy Guillet,$112780,$100K+
+Linell Compfort,$70440,$70K-$80K
+Lion Adcock,$63710,$60K-$70K
+Lishe Casemore,$117840,$100K+
+Lisle Danahar,$75990,$70K-$80K
+Lissy McCoy,$86230,$80K-$90K
+Lonny Caen,$71960,$30K-$40K
+Lorain Tew,$71590,$70K-$80K
+Loralyn Bruton,$39960,$30K-$40K
+Loren Bentote,$56280,$50K=$60K
+Loren Rettie,$96000,$90K-$100K
+Lorrie Derycot,$93270,$90K-$100K
+Louise Lamming,$83860,$40K-$50K
+Luca Wolstenholme,$53180,$50K=$60K
+Luce Beentjes,$48180,$40K-$50K
+Lucias Minico,$67960,$60K-$70K
+Ludovika Plaice,$59670,$50K=$60K
+Mabel Orrow,$31240,$30K-$40K
+Mable Phythian,$30000,$30K-$40K
+Mackenzie Hannis,$57000,$50K=$60K
+Madelene Upcott,$109190,$100K+
+Madge McCloughen,$91310,$90K-$100K
+Madlen Ashburner,$42240,$40K-$50K
+Maggee Stiggles,$38930,$30K-$40K
+Maggie Ruberti,$108340,$100K+
+Magnum Locksley,$42310,$40K-$50K
+Mahalia Larcher,$113280,$100K+
+Maisie Shotboulte,$71210,$70K-$80K
+Major O'Cahsedy,$29490,$20K-$30K
+Mallorie Waber,$60570,$60K-$70K
+Mallory Goldsberry,$29610,$20K-$30K
+Malory Biles,$58740,$50K=$60K
+Manolo Gasnell,$88380,$80K-$90K
+Marcellina Kitt,$78500,$70K-$80K
+Marcia Muldrew,$71510,$70K-$80K
+Marco Wooland,$85530,$80K-$90K
+Marga Lorenzo,$89360,$80K-$90K
+Margarete Blasing,$110970,$100K+
+Margit Kunze,$94020,$90K-$100K
+Margot Royds,$106930,$100K+
+Margy Elward,$103670,$100K+
+Mariann Mowat,$32620,$30K-$40K
+Mariette Daymont,$199060,$90K-$100K
+Marissa Infante,$78840,$70K-$80K
+Maritsa Marusic,$105500,$50K=$60K
+Marjie Bamford,$80770,$80K-$90K
+Marlie Charsley,$108450,$100K+
+Marline Wahncke,$72840,$70K-$80K
+Marlowe Constantine,$60560,$60K-$70K
+Marmaduke Worssam,$78380,$70K-$80K
+Marney O'Breen,$65920,$60K-$70K
+Marni Jull,$84200,$80K-$90K
+Martelle Brise,$79520,$70K-$80K
+Martita Beaumont,$81790,$80K-$90K
+Mata Fishley,$102520,$100K+
+Mathian MacMeeking,$90120,$40K-$50K
+Matias Cormack,$85460,$80K-$90K
+Max Shower,$67510,$60K-$70K
+Maximo Guirard,$37020,$30K-$40K
+Maximo Ungerecht,$96250,$90K-$100K
+Meara Darrington,$76190,$70K-$80K
+Melisa Knott,$86010,$80K-$90K
+Mella Northam,$109120,$100K+
+Melodie Torresi,$75090,$70K-$80K
+Melva Jickells,$68800,$60K-$70K
+Mendel Gentsch,$28330,$20K-$30K
+Meredith Rucklidge,$115840,$100K+
+Merrel Blind,$82120,$80K-$90K
+Merrilee Plenty,$175240,$80K-$90K
+Meryl Waggatt,$77060,$70K-$80K
+Michael Sidry,$81260,$80K-$90K
+Michaeline Capehorn,$95340,$90K-$100K
+Michaella Perri,$75320,$70K-$80K
+Michale Rolf,$111820,$100K+
+Mick Spraberry,$85880,$80K-$90K
+Mick Tanguy,$97400,$90K-$100K
+Mick Titman,$105330,$100K+
+Mickey Pybus,$87850,$80K-$90K
+Mickie Dagwell,$50860,$50K=$60K
+Miguel Woolner,$51740,$50K=$60K
+Millard Brakewell,$76560,$70K-$80K
+Millie Fiveash,$57080,$50K=$60K
+Milton Lilie,$46470,$40K-$50K
+Minetta Parsons,$221540,$100K+
+Minna Showler,$105370,$100K+
+Mirna Etoile,$29970,$20K-$30K
+Monroe Hendrickx,$34080,$30K-$40K
+Monti Burdus,$39650,$30K-$40K
+Moore Gligoraci,$49530,$40K-$50K
+Mora Innett,$105610,$100K+
+Mord Cromblehome,$57910,$50K=$60K
+Morten Dumphy,$111480,$100K+
+Murial Ickovici,$145000,$70K-$80K
+Murry Dryburgh,$138140,$60K-$70K
+My Hanscome,$59430,$50K=$60K
+Myer McCory,$69710,$60K-$70K
+Myrilla Mercik,$96660,$90K-$100K
+Myrle Prandoni,$62200,$60K-$70K
+Nananne Gehringer,$104800,$100K+
+Nani Brockley,$47000,$40K-$50K
+Nanice Boatwright,$105870,$100K+
+Naoma Cruse,$71540,$70K-$80K
+Natalee Craiker,$111230,$100K+
+Nathanial Brounfield,$105120,$100K+
+Nelli Schoolfield,$109870,$100K+
+Nerissa Kavanagh,$168340,$80K-$90K
+Nerita Mycock,$67430,$60K-$70K
+Nessi Delves,$56830,$50K=$60K
+Nessy Baskwell,$58130,$50K=$60K
+Niall Selesnick,$34980,$30K-$40K
+Nickolai Artin,$110910,$100K+
+Nicol Giacomi,$39750,$30K-$40K
+Nicola Kiely,$93740,$90K-$100K
+Nicole Blowfelde,$59560,$50K=$60K
+Nicolis Winspire,$45650,$40K-$50K
+Niko MacGille,$88430,$80K-$90K
+Niles Mahomet,$50020,$50K=$60K
+Nolan Tortis,$36710,$30K-$40K
+Noll Forbear,$109380,$100K+
+Nollie Courteney,$71490,$70K-$80K
+Nonah Bissell,$82240,$80K-$90K
+Norrie Grahl,$42950,$40K-$50K
+North Bertomeu,$104900,$100K+
+Northrup Aires,$118300,$100K+
+Novelia Pyffe,$52270,$50K=$60K
+Oates Dinan,$104680,$100K+
+Obidiah Westrope,$108460,$100K+
+Oby Sorrel,$117880,$50K=$60K
+Oliy Feeney,$42970,$40K-$50K
+Ollie Schirak,$48690,$40K-$50K
+Ondrea Banfield,$107790,$100K+
+Onofredo Hassan,$52220,$50K=$60K
+Oona Donan,$88360,$80K-$90K
+Oran Buxcy,$56870,$50K=$60K
+Orlando Gorstidge,$40750,$40K-$50K
+Orran Gritskov,$72700,$70K-$80K
+Orton Livick,$75840,$30K-$40K
+Osborn Pawle,$38030,$30K-$40K
+Ottilie Vittel,$34500,$30K-$40K
+Packston Joanic,$51860,$50K=$60K
+Pancho De Ortega,$99780,$90K-$100K
+Pate Beardsley,$85880,$80K-$90K
+Patience Noot,$49520,$40K-$50K
+Patricia Dwelly,$91500,$90K-$100K
+Patti Dradey,$84740,$80K-$90K
+Pauletta Falkus,$33560,$30K-$40K
+Payton Pickervance,$117020,$100K+
+Pearla Beteriss,$69910,$60K-$70K
+Pedro Carluccio,$41140,$40K-$50K
+Peggi Bullas,$56620,$50K=$60K
+Pembroke Siflet,$59550,$50K=$60K
+Penni Patemore,$29330,$20K-$30K
+Pennie Walmsley,$104470,$100K+
+Peria Revey,$103240,$100K+
+Petey Probey,$31630,$30K-$40K
+Petronella Marusik,$75600,$70K-$80K
+Philis Rowlstone,$85740,$80K-$90K
+Phillipp Nekrews,$71330,$70K-$80K
+Phylys Benitez,$84420,$80K-$90K
+Pierson Measham,$103160,$100K+
+Pippy Roxby,$106490,$100K+
+Pippy Shepperd,$44850,$40K-$50K
+Pooh Splevins,$31020,$30K-$40K
+Purcell Le Pine,$101220,$100K+
+Putnem Manchester,$70360,$70K-$80K
+Pyotr Lightewood,$33840,$30K-$40K
+Quentin Ferraresi,$49000,$40K-$50K
+Quintina Kilgannon,$86490,$80K-$90K
+Radcliffe Fairpool,$60760,$60K-$70K
+Rafaelita Blaksland,$109160,$100K+
+Rasia Fryatt,$33960,$30K-$40K
+Rasla Fisby,$109000,$100K+
+Reena McKernan,$104750,$100K+
+Reg MacMichael,$106890,$100K+
+Reggie Taylerson,$87610,$80K-$90K
+Reidar Skechley,$40770,$40K-$50K
+Reinald Franken,$28870,$20K-$30K
+Renaldo Thomassin,$73360,$70K-$80K
+Reube Sushams,$90130,$90K-$100K
+Rey Chartman,$93960,$90K-$100K
+Rhiamon Mollison,$118860,$50K=$60K
+Rhianna McLeoid,$114900,$100K+
+Rhody Odhams,$103600,$100K+
+Riccardo Hagan,$86560,$80K-$90K
+Richy Gray,$89830,$80K-$90K
+Roanne Phizacklea,$35990,$30K-$40K
+Robbert Mandrier,$98020,$90K-$100K
+Robinia Scholling,$100730,$100K+
+Roddy Speechley,$115920,$100K+
+Rodina Drinan,$77050,$70K-$80K
+Rodrigo Congdon,$117940,$100K+
+Rogers Rosenthaler,$91190,$90K-$100K
+Rois Garrigan,$61430,$60K-$70K
+Romona Dimmne,$48250,$40K-$50K
+Romona Melody,$88690,$80K-$90K
+Ronnie Mesias,$86360,$80K-$90K
+Ronnie Sinyard,$101760,$100K+
+Rory Ravenscroftt,$45450,$40K-$50K
+Rosaline Wenderott,$36820,$30K-$40K
+Rosamond Fishe,$108160,$100K+
+Rosco Cogley,$86840,$80K-$90K
+Rose Shurrocks,$32140,$30K-$40K
+Roselle Wandrach,$91310,$90K-$100K
+Roth Bourget,$28870,$20K-$30K
+Royal Nowakowska,$79570,$70K-$80K
+Ruby Cracie,$78710,$70K-$80K
+Rudyard Tomsa,$43900,$40K-$50K
+Ruthanne Beadnell,$103610,$100K+
+Ryon Baroch,$43590,$40K-$50K
+Sabina Scorrer,$70930,$70K-$80K
+Sammy Gantlett,$74800,$70K-$80K
+Sandi Labat,$60140,$60K-$70K
+Sandie Anthonies,$33410,$30K-$40K
+Sandy Cadden,$95980,$90K-$100K
+Sarajane Peachey,$107580,$100K+
+Sarajane Scourge,$58830,$50K=$60K
+Sarene Creeboe,$35830,$30K-$40K
+Saunders Blumson,$112740,$50K=$60K
+Saundra O'Connel,$85330,$80K-$90K
+Selby Hacker,$37800,$30K-$40K
+Seward Kubera,$43330,$40K-$50K
+Shana Bewly,$105960,$100K+
+Shannen Crittal,$68040,$60K-$70K
+Shanon Deverell,$78180,$70K-$80K
+Shari McNee,$75880,$70K-$80K
+Shari Pickston,$192640,$90K-$100K
+Sharity Brands,$104080,$100K+
+Sharl Bendson,$33630,$30K-$40K
+Sharron Petegree,$87290,$80K-$90K
+Shaun Kyrkeman,$35010,$30K-$40K
+Shay Chasney,$72550,$70K-$80K
+Shaylah Owbrick,$56900,$50K=$60K
+Shaylyn Ransbury,$100370,$100K+
+Shayne Stegel,$70270,$70K-$80K
+Shea Mix,$82680,$80K-$90K
+Sheff Gerdts,$178320,$80K-$90K
+Shela Goade,$93930,$90K-$100K
+Shelbi Aldin,$40910,$40K-$50K
+Shelby Buckland,$76390,$70K-$80K
+Shelley Moncreiffe,$108360,$100K+
+Shellysheldon Ellerman,$34470,$30K-$40K
+Shellysheldon Mahady,$114690,$100K+
+Shirlene Argo,$87210,$80K-$90K
+Sibyl Dunkirk,$86570,$80K-$90K
+Sile Whorton,$122420,$60K-$70K
+Silva Monte,$52810,$50K=$60K
+Simon Kembery,$99750,$90K-$100K
+Sisely Gatsby,$85670,$80K-$90K
+Sissy Muehle,$86470,$80K-$90K
+Skip Morkham,$83180,$80K-$90K
+Sly Cowley,$48530,$40K-$50K
+Stan Tolliday,$39540,$30K-$40K
+Stefa Eggleston,$88380,$80K-$90K
+Stephan Bussel,$48290,$40K-$50K
+Steven Labat,$37110,$30K-$40K
+Stormy Church,$29880,$20K-$30K
+Susy Challoner,$29890,$20K-$30K
+Tabbatha Pickston,$144080,$70K-$80K
+Taddeo Jovis,$98740,$90K-$100K
+Tadio Audritt,$99450,$90K-$100K
+Tadio Dowdle,$91930,$90K-$100K
+Tallie Chaikovski,$83190,$80K-$90K
+Tamar MacGilfoyle,$47270,$40K-$50K
+Tamara Couvet,$61050,$60K-$70K
+Tammi Lackham,$61690,$60K-$70K
+Tammy Backson,$44820,$40K-$50K
+Tarrah Wordsworth,$86340,$80K-$90K
+Tatum Hush,$53240,$50K=$60K
+Tawnya Tickel,$118840,$100K+
+Thedrick Bothwell,$69760,$60K-$70K
+Thedrick Rogeon,$110950,$100K+
+Thekla Lynnett,$53950,$50K=$60K
+Theresita Chasmer,$106670,$100K+
+Thorvald Milliken,$33030,$30K-$40K
+Tiffani Mecozzi,$119750,$100K+
+Timmi Durran,$68430,$60K-$70K
+Timmy Brenston,$43700,$40K-$50K
+Toby Brodhead,$98400,$90K-$100K
+Toby Micklewright,$32980,$30K-$40K
+Torey Rosell,$82670,$80K-$90K
+Torrance Collier,$96140,$90K-$100K
+Townie Dongall,$48630,$40K-$50K
+Trace Sidsaff,$51200,$50K=$60K
+Tracy Renad,$114890,$100K+
+Trey Jurges,$72360,$70K-$80K
+Tris Hynard,$29080,$20K-$30K
+Trix Lutsch,$212800,$100K+
+Trudie Couch,$43110,$40K-$50K
+Twila Roantree,$96620,$90K-$100K
+Tyson Prescote,$29420,$20K-$30K
+Ulick Maingot,$42820,$40K-$50K
+Valentia Etteridge,$118100,$100K+
+Van Ruseworth,$80610,$80K-$90K
+Van Tuxwell,$161400,$80K-$90K
+Vasily MacVanamy,$84470,$80K-$90K
+Vassili Flay,$108970,$100K+
+Vaughn Carvill,$84750,$80K-$90K
+Vere Kulic,$66570,$60K-$70K
+Verla Timmis,$54140,$50K=$60K
+Verney Sloegrave,$84500,$80K-$90K
+Vernor Atyea,$102930,$100K+
+Vic Radolf,$62780,$60K-$70K
+Violetta Vial,$68970,$60K-$70K
+Virge Garfield,$110890,$100K+
+Virginia McConville,$76900,$70K-$80K
+Vlad Strangeway,$77740,$70K-$80K
+Von Boeter,$36370,$30K-$40K
+Wald Bountiff,$28970,$20K-$30K
+Warner Carwithan,$113760,$100K+
+Wendel Malletratt,$67660,$60K-$70K
+Westbrook Brandino,$113620,$100K+
+Willi Vasey,$43020,$40K-$50K
+William Coveny,$66140,$60K-$70K
+William Reeveley,$107740,$50K=$60K
+Wilone O'Kielt,$114870,$100K+
+Wilt Wayvill,$99750,$90K-$100K
+Win Arthurs,$86400,$40K-$50K
+Winny Millam,$94050,$90K-$100K
+Wyatt Clinch,$52590,$50K=$60K
+Wyn Treadger,$138380,$60K-$70K
+Xavier Filipic,$31050,$30K-$40K
+Xylina Pargetter,$109790,$100K+
+Yanaton Wooster,$76930,$70K-$80K
+Yasmeen Klimkiewich,$48140,$40K-$50K
+Yolande O'Dare,$51650,$50K=$60K
+Yoshiko Tamblingson,$29590,$20K-$30K
+Yves Clunie,$75440,$70K-$80K
+Yves Pawlik,$57930,$50K=$60K
+Yvette Bett,$76320,$70K-$80K
+Zach Polon,$53540,$50K=$60K
+Zebulon Allmen,$52140,$50K=$60K
+ing destribution of employees grouped by a band of 10k to 20k.csv…]()
+
+
+● How many employees fall into a band of $10,000 – $20,000, $20,000 – $30,000, 
+etc.? 
+**● Also visualize this by regions**
+[UpCount of Salary Band,Location
+361,Kaduna
+335,Abuja
+250,Lagos
+loading Salary Band by Location.csv…]()
+
+
+#Case Questions 
+5. Mr Gamma thought to himself that since you were already working on the employee 
+data, you could help out with allocating the annual bonus pay to employees based on the 
+performance rating. He handed you another data set that contains rules for making bonus 
+payments and asked you to: 
+
+#●  Calculate the amount to be paid as a bonus to individual employees
+[UploaName,Sum of BONUS
+Chauncey Schild,₦32202
+Easter Pyke,₦28704
+Cletus McGarahan,₦28607.5
+Barbara-anne Kenchington,₦26409
+Barnaby Farnall,₦23760
+Evangelia Gowers,₦23690
+Hector Isard,₦23394
+Candy Aindrais,₦23318
+Ashien Gallen,₦23016
+Alexis Gotfrey,₦22894
+Hogan Iles,₦22836
+Beverie Moffet,₦22791
+Cara Havers,₦22402.5
+Michale Rolf,₦22364
+Amery Ofer,₦22210
+Fred Dudeney,₦22172.5
+Ianthe Sayre,₦22146
+Merrilee Plenty,₦21905
+Emmye Corry,₦21806
+Rasla Fisby,₦21800
+Arty Duigan,₦21720
+Kaine Padly,₦21540
+Gearard Wixon,₦21238
+Euell Willoughley,₦21160
+Ava Whordley,₦20842
+Leslie Baruch,₦20798
+Cindee Saice,₦20672
+Pancho De Ortega,₦19956
+Chrisy Kyme,₦19840
+Robbert Mandrier,₦19604
+Garwood Penhale,₦19328
+Kincaid Hellicar,₦19322
+Felipe Parkman,₦18030
+Alyosha Riquet,₦17968
+Richy Gray,₦17966
+Ches Bonnell,₦17610
+Fidela Dowey,₦17348
+Pate Beardsley,₦17176
+Saunders Blumson,₦16911
+Minetta Parsons,₦16615.5
+Issie Crippes,₦16344
+Marjie Bamford,₦16154
+Ambrosio Daniely,₦16012
+Trix Lutsch,₦15960
+Marcellina Kitt,₦15700
+Althea Bronger,₦15651
+Shanon Deverell,₦15636
+Virginia McConville,₦15380
+Joyce Esel,₦15208.5
+Cleveland Pottiphar,₦14920
+Josie Barnson,₦14822
+Crawford Scad,₦14576
+Phillipp Nekrews,₦14266
+Maisie Shotboulte,₦14242
+Linell Compfort,₦14088
+Shayne Stegel,₦14054
+Ali Roubert,₦13892
+Grady Rochelle,₦13832
+Andria Kimpton,₦13824
+Ebonee Roxburgh,₦13590
+Sheff Gerdts,₦13374
+Katya Hundy,₦13276.5
+Antonino Forsdicke,₦13274
+Jessica Callcott,₦13204
+Hali Behnecke,₦13114
+Angeline Christophersen,₦13041
+Win Arthurs,₦12960
+Krysta Elacoate,₦12831.6
+Jedd Moretto,₦12744
+Lincoln Cord,₦12712
+Dulsea Folkes,₦12648
+Inger Chapelhow,₦12646.5
+Vic Radolf,₦12556
+Myrle Prandoni,₦12440
+Frederik Dartan,₦12418
+Radcliffe Fairpool,₦12152
+Erin Androsik,₦12132.5
+Alfred Peplay,₦12116
+Gino Groome,₦12088
+Kai Ryder,₦11993
+Tiffani Mecozzi,₦11975
+Anni Dinse,₦11967
+Gamaliel Ewins,₦11966
+Nicole Blowfelde,₦11912
+Rhiamon Mollison,₦11886
+Giacobo Donke,₦11836
+Northrup Aires,₦11830
+Farrel Vanyatin,₦11812
+Valentia Etteridge,₦11810
+Rodrigo Congdon,₦11794
+Oby Sorrel,₦11788
+Lishe Casemore,₦11784
+Garrick Hadwick,₦11781
+Jo Benoi,₦11752
+Colly Littledike,₦11715
+Judie Di Bernardo,₦11715
+Payton Pickervance,₦11702
+Bobina Teale,₦11689
+Darcy Brewitt,₦11667
+Hatti Vezey,₦11624
+Brien Boise,₦11620
+Hiram Merkle,₦11609
+Yves Pawlik,₦11586
+Honoria Cootes,₦11564
+Benny Karolovsky,₦11544
+Gaultiero Have,₦11538
+Katerine Lohden,₦11509
+Rhianna McLeoid,₦11490
+Tracy Renad,₦11489
+Kelley Rounds,₦11481
+Baudoin Dummigan,₦11451
+Beatrix Schoales,₦11401
+Dyanne Strafen,₦11380
+Alic Bagg,₦11375
+Ignacio Delion,₦11369
+Nessi Delves,₦11366
+Daron Biaggioli,₦11255
+Harwilll Domotor,₦11237
+Karon Oscroft,₦11212
+Natalee Craiker,₦11123
+Granville Stetson,₦11119
+Nickolai Artin,₦11091
+Herschel Wareham,₦11083
+Gerrard Doorey,₦11020
+Lane Monteaux,₦10998
+Nelli Schoolfield,₦10987
+Xylina Pargetter,₦10979
+Cecilio Sprankling,₦10971
+Juanita Trembey,₦10956
+Noll Forbear,₦10938
+Madelene Upcott,₦10919
+Doro Nolte,₦10905
+Danielle Johananoff,₦10904
+Vassili Flay,₦10897
+Murial Ickovici,₦10875
+Shelley Moncreiffe,₦10836
+Brig Dewi,₦10825
+Izzy Brisco,₦10808
+Tabbatha Pickston,₦10806
+Ondrea Banfield,₦10779
+Israel Farndon,₦10722
+Efrem Mathonnet,₦10702
+Margot Royds,₦10693
+Reg MacMichael,₦10689
+Theresita Chasmer,₦10667
+Pippy Roxby,₦10649
+Kissiah Maydway,₦10646
+Bogey Hitcham,₦10617
+Maritsa Marusic,₦10550
+Augusta Cheetham,₦10547
+Joana Bartocci,₦10534
+Nathanial Brounfield,₦10512
+Nananne Gehringer,₦10480
+Alida Welman,₦10479
+Janene Hairsine,₦10477
+Reena McKernan,₦10475
+Oates Dinan,₦10468
+Caro Chappel,₦10441
+Wyn Treadger,₦10378.5
+Margy Elward,₦10367
+Murry Dryburgh,₦10360.5
+Dyna Doucette,₦10355
+Duky Wallace,₦10214
+Freda Legan,₦10213
+Colby Reuven,₦10179
+Kayley Southwell,₦10167
+Dorise Labat,₦10161
+Daven Smout,₦10160
+Allyce Hincham,₦10142
+Audry Yu,₦10119
+Robinia Scholling,₦10073
+Shaylyn Ransbury,₦10037
+Cyrillus Garci,₦10036
+Bernie Gorges,₦9997
+Simon Kembery,₦9975
+Wilt Wayvill,₦9975
+Amandy Jope,₦9963
+Mariette Daymont,₦9953
+Gabie Millichip,₦9952
+Granny Spencelayh,₦9946
+Tadio Audritt,₦9945
+Toby Brodhead,₦9840
+Anjela Spancock,₦9801
+Dolley Grayley,₦9796
+Calvin O'Carroll,₦9779
+Jessica Burditt,₦9712
+Eleonore Airdrie,₦9711
+Constantino Espley,₦9680
+Antonetta Coggeshall,₦9675
+Myrilla Mercik,₦9666
+Shari Pickston,₦9632
+Yasmeen Klimkiewich,₦9628
+Maximo Ungerecht,₦9625
+Loren Rettie,₦9600
+Sandy Cadden,₦9598
+Fanchon Furney,₦9595
+Adela Dowsett,₦9502
+Jeannie Petracco,₦9482
+Emanuel Beldan,₦9407
+Appolonia Snook,₦9388
+Nicola Kiely,₦9374
+Bette-ann Leafe,₦9350
+Lorrie Derycot,₦9327
+Clarine Shambrooke,₦9316
+Karita Vasyanin,₦9308
+Cecilla Northen,₦9287
+Hinda Label,₦9270
+Ardyce Eacott,₦9247
+Abigael Basire,₦9243
+Foss Asquez,₦9219
+Tadio Dowdle,₦9193
+Jillana Gabbitis,₦9136
+Madge McCloughen,₦9131
+Roselle Wandrach,₦9131
+Adelina Cheeseman,₦9102
+Rory Ravenscroftt,₦9090
+Aldrich Glenny,₦9088
+Konstanze Wyleman,₦9080
+Leela Eckart,₦9034
+Evyn Fyrth,₦9008
+Lonny Caen,₦8995
+Curtice Advani,₦8971.5
+Pippy Shepperd,₦8970
+Eleni O'Quin,₦8902
+Fairfax Wallsam,₦8859
+Niko MacGille,₦8843
+Stefa Eggleston,₦8838
+Oona Donan,₦8836
+Georg Dinnage,₦8833
+Bebe Pollicott,₦8774
+Emmanuel Westrey,₦8740
+Hobard Benninger,₦8692
+Rosco Cogley,₦8684
+Seward Kubera,₦8666
+Charmane Heistermann,₦8656
+Riccardo Hagan,₦8656
+Sissy Muehle,₦8647
+Isidora Guido,₦8630
+Barri Teacy,₦8624
+Melisa Knott,₦8601
+Philis Rowlstone,₦8574
+Cyril Medford,₦8572
+Sisely Gatsby,₦8567
+Marco Wooland,₦8553
+Matias Cormack,₦8546
+Saundra O'Connel,₦8533
+Iain Wiburn,₦8476
+Vaughn Carvill,₦8475
+Patti Dradey,₦8474
+Verney Sloegrave,₦8450
+Madlen Ashburner,₦8448
+Vasily MacVanamy,₦8447
+Phylys Benitez,₦8442
+Agnes Collicott,₦8375
+Tallie Chaikovski,₦8319
+Skip Morkham,₦8318
+Torey Rosell,₦8267
+Merrel Blind,₦8212
+Evanne Sheryn,₦8190
+Michael Sidry,₦8126
+Archibald Filliskirk,₦8080
+Van Tuxwell,₦8070
+Van Ruseworth,₦8061
+Fonzie O'Shea,₦8036
+Aileen McCritchie,₦8017
+Kellsie Waby,₦7957
+Royal Nowakowska,₦7957
+Martelle Brise,₦7952
+Marissa Infante,₦7884
+Gray Seamon,₦7854
+Isadora Maunsell,₦7849
+Allene Gobbet,₦7839
+Dewie Stodart,₦7802
+Fidela Artis,₦7802
+Grady Crosgrove,₦7791
+Lia Lurner,₦7726
+Itch Tinklin,₦7711
+Abramo Labbez,₦7700
+Yanaton Wooster,₦7693
+Liane Bedburrow,₦7662
+Shelby Buckland,₦7639
+Dorolice Farry,₦7630
+Joella Maevela,₦7621
+Lisle Danahar,₦7599
+Shari McNee,₦7588
+Derk Bosson,₦7587
+Jordain Cyster,₦7587
+Petronella Marusik,₦7560
+Brit Hamnett,₦7554
+Camilla Castle,₦7548
+Yves Clunie,₦7544
+Elia Cockton,₦7528
+Melodie Torresi,₦7509
+Faun Rickeard,₦7492
+Gigi Bohling,₦7455
+Beryl Burnsyde,₦7442.5
+Enrichetta Mowles,₦7439
+Leena Bruckshaw,₦7428
+Jobey Boneham,₦7401
+Renaldo Thomassin,₦7336
+Ingunna Wainscoat,₦7324
+Marline Wahncke,₦7284
+Shay Chasney,₦7255
+Cristal Demangeot,₦7235
+Genovera Ghost,₦7216
+Delphine Jewis,₦7182
+Naoma Cruse,₦7154
+Frasier Straw,₦7137
+Craggie Whistlecraft,₦7124
+Avigdor Karel,₦7121
+Justino Chapiro,₦7103
+Sabina Scorrer,₦7093
+Ambros Murthwaite,₦7061
+Putnem Manchester,₦7036
+Andrea Penfold,₦7023
+Dayle O'Luney,₦7012.5
+Jolynn Lumbley,₦7002
+Cornie Arstall,₦6997
+Thedrick Bothwell,₦6976
+Myer McCory,₦6971
+Kristofor Powner,₦6934
+Kikelia Ellor,₦6924
+Billi Fellgate,₦6898
+Violetta Vial,₦6897
+Hyacinthie Braybrooke,₦6890
+Joyce Leyband,₦6820
+Cull Nannetti,₦6809
+Barr Faughny,₦6801
+Jessika Jaycocks,₦6798
+Anjanette Ferre,₦6796
+Lucias Minico,₦6796
+Husein Augar,₦6791
+Alicea Pudsall,₦6763
+Mathian MacMeeking,₦6759
+Nerita Mycock,₦6743
+Delinda Snozzwell,₦6701
+Dominic Ortler,₦6661
+Gideon Hehir,₦6651
+Addy Pimblett,₦6646
+Freddie Johnikin,₦6496
+Jori Ashleigh,₦6427
+Lion Adcock,₦6371
+Daphne Francillo,₦6337
+Archibald Dyzart,₦6302
+Louise Lamming,₦6289.5
+Desi Peniman,₦6218
+Halette Yesenev,₦6192
+Letizia Hasselby,₦6179
+Adella Hartshorne,₦6174
+Blaire Ruckman,₦6170
+Aubert Wedmore.,₦6133
+Evangelina Lergan,₦6121
+Sile Whorton,₦6121
+Chelsea Itzak,₦6110
+Tamara Couvet,₦6105
+Duffie Ibel,₦6101
+Felicdad Heibel,₦6080
+Marlowe Constantine,₦6056
+Alexine Portail,₦6033
+Sandi Labat,₦6014
+Jehu Rudeforth,₦6013
+Effie Vasilov,₦6001
+Carmel Pancoust,₦5977.5
+Ewart Laphorn,₦5955.5
+Pembroke Siflet,₦5955
+Edd MacKnockiter,₦5951
+Collen Dunbleton,₦5949
+My Hanscome,₦5943
+Erv Balmann,₦5934
+Chancey Dyos,₦5903
+Lilyan Klimpt,₦5896
+Brodie Grimstead,₦5892.5
+Aurelea Devitt,₦5884
+Latisha Jolly,₦5840
+Ewart Hovel,₦5838.5
+Berenice Osbaldstone,₦5828
+Abbie Tann,₦5826
+Georgie Caress,₦5826
+Nessy Baskwell,₦5813
+Burtie Moulden,₦5811
+Kit Battlestone,₦5799
+Roddy Speechley,₦5796
+Wald Bountiff,₦5794
+Mord Cromblehome,₦5791
+Corabel Luberto,₦5782
+Eberto William,₦5775
+Dov Thoresby,₦5774.5
+Reinald Franken,₦5774
+Ansley Gounel,₦5766
+Fax Scotland,₦5764
+Faunie Sinton,₦5761.5
+Aile Strathearn,₦5730
+Benoite Ackermann,₦5708
+Millie Fiveash,₦5708
+Julian Andrassy,₦5699
+Shaylah Owbrick,₦5690
+Warner Carwithan,₦5688
+Westbrook Brandino,₦5681
+Berny Bastide,₦5671
+Mahalia Larcher,₦5664
+Peggi Bullas,₦5662
+Lindy Guillet,₦5639
+Halimeda Kuscha,₦5628.5
+Konstantin Timblett,₦5625
+Lezlie Balmann,₦5623
+Cathi Delgardo,₦5595.5
+Morten Dumphy,₦5574
+Thedrick Rogeon,₦5547.5
+Virge Garfield,₦5544.5
+Antone Tolmie,₦5541
+Axel Grigaut,₦5539
+Bryana Loyns,₦5528
+Carlin Demke,₦5502
+Alta Kaszper,₦5497
+Gisella Mewe,₦5488
+Gayla Blackadder,₦5458.5
+Rafaelita Blaksland,₦5458
+Obidiah Westrope,₦5423
+Bordy Yatman,₦5422.5
+Marlie Charsley,₦5422.5
+Daryn Kniveton,₦5419.5
+Verla Timmis,₦5414
+Rosamond Fishe,₦5408
+Brose MacCorkell,₦5391
+William Reeveley,₦5387
+Jordain Sparkwill,₦5383
+Sarajane Peachey,₦5379
+Callie Duckels,₦5376
+Joey Keedwell,₦5372
+Inger Andriveaux,₦5355.5
+Gardy Grigorey,₦5354.5
+Bari Toffano,₦5339
+Alysa Wankling,₦5323
+Luca Wolstenholme,₦5318
+Shana Bewly,₦5298
+Jill Shipsey,₦5296
+Mora Innett,₦5280.5
+Minna Showler,₦5268.5
+Mick Titman,₦5266.5
+Cyndia Skedge,₦5263
+North Bertomeu,₦5245
+Hilliary Roarty,₦5238.5
+Onofredo Hassan,₦5222
+Zebulon Allmen,₦5214
+Cherlyn Barter,₦5206
+Ruthanne Beadnell,₦5180.5
+Grier Kidsley,₦5180
+Rhody Odhams,₦5180
+Anni Izzard,₦5174.5
+Leslie Cardoso,₦5167
+Peria Revey,₦5162
+Pierson Measham,₦5158
+Helaine Lyddy,₦5155.5
+Cly Vizard,₦5152
+Vernor Atyea,₦5146.5
+Mata Fishley,₦5126
+Ronnie Sinyard,₦5088
+Addi Studdeard,₦5075
+Floria Olivia,₦5075
+Purcell Le Pine,₦5061
+Genevra Friday,₦5045
+Daisie McNeice,₦5031
+Collin Jagson,₦5021
+Niles Mahomet,₦5002
+Caron Kolakovic,₦4992
+Janina Wolverson,₦4984
+Lindi Morfey,₦4973.5
+Larry Pioch,₦4967
+Cindi Stratten,₦4960
+Moore Gligoraci,₦4953
+Patience Noot,₦4952
+Cathyleen Hurch,₦4939
+Taddeo Jovis,₦4937
+Ede Mignot,₦4932
+Aurelia Stanners,₦4931.5
+Diarmid Alman,₦4910
+Damien Netley,₦4905.5
+Mick Tanguy,₦4870
+Ollie Schirak,₦4869
+Sly Cowley,₦4853
+Kakalina Stanaway,₦4851
+Jim Perrygo,₦4839.5
+Twila Roantree,₦4831
+Stephan Bussel,₦4829
+Torrance Collier,₦4807
+Jannel Labb,₦4791
+Eddy Stolze,₦4776
+Griz Thorington,₦4767
+Michaeline Capehorn,₦4767
+Carry Loblie,₦4755
+Forester Feakins,₦4729
+Tamar MacGilfoyle,₦4727
+Charline Husset,₦4726.5
+Margit Kunze,₦4701
+Eldredge MacClure,₦4699
+Rey Chartman,₦4698
+Shela Goade,₦4696.5
+Caty Janas,₦4660.5
+Freddy Linford,₦4656.5
+Hobie Stockbridge,₦4647
+Milton Lilie,₦4647
+Francoise Godbold,₦4635
+Candace Hanlon,₦4628
+Fedora Graffin,₦4625
+Giffer Berlin,₦4617
+Andrea Becker,₦4616
+Patricia Dwelly,₦4575
+Rogers Rosenthaler,₦4559.5
+Kienan Epinay,₦4556
+Christoph Stretton,₦4512
+Reube Sushams,₦4506.5
+Adolph Hartin,₦4498
+Danica Nayshe,₦4484.5
+Tammy Backson,₦4482
+Marga Lorenzo,₦4468
+Haven Belward,₦4456
+Beatriz Bateson,₦4454.5
+Elliot Tuplin,₦4453
+Jeane Blaszczak,₦4430
+Manolo Gasnell,₦4419
+Mickey Pybus,₦4392.5
+Reggie Taylerson,₦4380.5
+Timmy Brenston,₦4370
+Edgard Irving,₦4364.5
+Sharron Petegree,₦4364.5
+Courtney Given,₦4360
+Drusy MacCombe,₦4351
+Jacklyn Andrioletti,₦4349.5
+Quintina Kilgannon,₦4324.5
+Judi Cosgriff,₦4319.5
+Tarrah Wordsworth,₦4317
+Lissy McCoy,₦4311.5
+Trudie Couch,₦4311
+Willi Vasey,₦4302
+Josepha Keningham,₦4299
+Adolph McNalley,₦4296
+Mick Spraberry,₦4294
+Lark Ironmonger,₦4289
+Ulick Maingot,₦4282
+Hartwell Pratchett,₦4273
+Kelly Corkitt,₦4263
+Jolynn Behnecken,₦4259
+Alikee Jecock,₦4250
+Issy McLevie,₦4247
+Fancy Bonin,₦4234
+Marni Jull,₦4210
+Nerissa Kavanagh,₦4208.5
+Dotty Strutley,₦4198
+Codie Gaunson,₦4179.5
+Cathi Gillbee,₦4179
+Durand Backhouse,₦4170
+Eward Astlett,₦4167
+Hildagard Reece,₦4122
+Pedro Carluccio,₦4114
+Nonah Bissell,₦4112
+Reidar Skechley,₦4077
+Denni Wiggans,₦4061
+Korney Bockings,₦4053
+Layton Crayden,₦4045
+Clo Jimpson,₦4033.4
+Archaimbaud Pinchin,₦4027
+Dane Wudeland,₦4001.5
+Devinne Tuny,₦3997
+Loralyn Bruton,₦3996
+Jaime Dowe,₦3994
+Gardy Eckersall,₦3982.5
+Nicol Giacomi,₦3975
+Debera Gow,₦3970
+Monti Burdus,₦3965
+Stan Tolliday,₦3954
+Ruby Cracie,₦3935.5
+Anne-corinne Daulby,₦3932
+Adrianne Gave,₦3922
+Maggee Stiggles,₦3893
+Cecilla Joselevitch,₦3892
+Vlad Strangeway,₦3887
+Caro Hainsworth,₦3873.5
+Lanny Beaney,₦3873
+Joli Jodrelle,₦3855
+Meryl Waggatt,₦3853
+Rodina Drinan,₦3852.5
+Kay Edling,₦3833
+Millard Brakewell,₦3828
+Hedwiga Ingarfield,₦3825
+Yvette Bett,₦3816
+Gilles Jaquet,₦3815
+Meara Darrington,₦3809.5
+Osborn Pawle,₦3803
+Lil Ibberson,₦3796
+Orton Livick,₦3792
+Selby Hacker,₦3780
+Billie Croucher,₦3761.5
+Aeriela Aickin,₦3755
+Corinna Griffiths,₦3750.5
+Isaak Rawne,₦3736
+Bren Absolon,₦3735.5
+Grover Cooksey,₦3731
+Conchita Soden,₦3720.5
+Christos Wintle,₦3718
+Steven Labat,₦3711
+Floyd Cowgill,₦3706
+Maximo Guirard,₦3702
+Carolin Fieldstone,₦3692
+Lea Chaplin,₦3674.5
+Joshia Farris,₦3674
+Nolan Tortis,₦3671
+Jamesy O'Ferris,₦3655
+Alisha Bloschke,₦3648
+Trey Jurges,₦3618
+Bili Sizey,₦3604
+Bert Yaakov,₦3602
+Roanne Phizacklea,₦3599
+Gilda Richen,₦3596
+Florie Tortoise,₦3593
+Jamal Beagen,₦3583
+Sarene Creeboe,₦3583
+Lorain Tew,₦3579.5
+Marcia Muldrew,₦3575.5
+Blythe Clipston,₦3567
+Aindrea Lenormand,₦3559
+Carolyn Attack,₦3538
+Ardella Dyment,₦3532.5
+Helene Bouts,₦3519
+Shaun Kyrkeman,₦3501
+Pearla Beteriss,₦3495.5
+Juditha Hatherleigh,₦3483
+Lincoln Greatex,₦3465
+Gradey Litton,₦3444.5
+Joaquin McVitty,₦3443
+Melva Jickells,₦3440
+Kerwin Blakely,₦3424
+Timmi Durran,₦3421.5
+Garwin Peasegood,₦3411
+Shannen Crittal,₦3402
+Gretchen Callow,₦3392
+Deck McCallion,₦3389
+Delora Arendt,₦3381
+Hedvige Stelfox,₦3380
+Aretha Ettridge,₦3376
+Pauletta Falkus,₦3356
+Sandie Anthonies,₦3341
+Vere Kulic,₦3328.5
+William Coveny,₦3307
+Corina Triner,₦3305
+Janaya MacGinlay,₦3305
+Marney O'Breen,₦3296
+Kingsley Hagard,₦3281
+Abran Danielsky,₦3272
+Adey Ryal,₦3250
+Austine Littlewood,₦3227
+Estell Kingsland,₦3219
+Anabal Cooke,₦3192
+Garey Bird,₦3183
+Bendite Bloan,₦3182
+Egor Minto,₦3172.5
+Felita Whitloe,₦3172.5
+Dael Bugge,₦3134.5
+Elwira Lyddiard,₦3128
+Ginger Myott,₦3117
+Ernestus O'Hengerty,₦3102
+Pooh Splevins,₦3102
+Tammi Lackham,₦3084.5
+Rois Garrigan,₦3071.5
+Mallorie Waber,₦3028.5
+Ferrell Skepper,₦3025
+Koral Gerriet,₦3008
+Doralyn Segar,₦3000
+Mable Phythian,₦3000
+Mirna Etoile,₦2997
+Bryant Scamp,₦2981
+Carlene Torry,₦2980.5
+Gerald Caple,₦2965
+Caresa Christer,₦2963
+Franchot Crocken,₦2961
+Mallory Goldsberry,₦2961
+Gisela Wille,₦2942.5
+Tyson Prescote,₦2942
+Sarajane Scourge,₦2941.5
+Penni Patemore,₦2933
+Glennis Fussen,₦2918.5
+Tris Hynard,₦2908
+Farris Ditchfield,₦2901.5
+Roth Bourget,₦2887
+Laney Renne,₦2867.5
+Carolina Blumsom,₦2858
+Ignacius Losel,₦2848
+Oran Buxcy,₦2843.5
+Charmaine Howie,₦2840.5
+Hephzibah Summerell,₦2831
+Loren Bentote,₦2814
+Claudetta Petherick,₦2726
+Caritta Searl,₦2700.5
+Thekla Lynnett,₦2697.5
+Amii Elms,₦2696
+Brigid Jeffrey,₦2695.5
+Hoyt D'Alesco,₦2677
+Zach Polon,₦2677
+Tatum Hush,₦2662
+Silva Monte,₦2640.5
+Kaye Crocroft,₦2630.5
+Wyatt Clinch,₦2629.5
+Novelia Pyffe,₦2613.5
+Dino Wooderson,₦2606
+Jakob Philippe,₦2595.5
+Lek Scamaden,₦2593
+Packston Joanic,₦2593
+Miguel Woolner,₦2587
+Yolande O'Dare,₦2582.5
+Trace Sidsaff,₦2560
+Isa Mogie,₦2547.5
+Quentin Ferraresi,₦2450
+Gunar Cockshoot,₦2447.5
+Romona Dimmne,₦2412.5
+Luce Beentjes,₦2409
+Jan Morforth,₦2408.5
+Barney Bonafant,₦2403
+Corny Linturn,₦2398
+Giselbert Newlands,₦2382.5
+L;urette Bontein,₦2382.5
+Dell Molloy,₦2368
+Nani Brockley,₦2350
+Jeane Bermingham,₦2339.6
+Benni Simounet,₦2315.8
+Eilis Pavlasek,₦2303.8
+Shellysheldon Mahady,₦2293.8
+Faina Durand,₦2293
+Nicolis Winspire,₦2282.5
+Cullie Bourcq,₦2279.5
+Layton Kierans,₦2275.8
+Florinda Crace,₦2275.5
+Rudyard Tomsa,₦2195
+Ryon Baroch,₦2179.5
+Aeriell Cuell,₦2165.8
+Oliy Feeney,₦2148.5
+Norrie Grahl,₦2147.5
+Collette Blackaller,₦2119
+Nanice Boatwright,₦2117.4
+Gwenore Scotchmer,₦2105.8
+Lamar Blewitt,₦2095.5
+Camille Baldinotti,₦2085
+Sharity Brands,₦2081.6
+Dionne Garrish,₦2080
+Krystal Lambswood,₦2080
+Crissie Cordel,₦2078.5
+Aloisia Minto,₦2071
+Shelbi Aldin,₦2045.5
+Codi Beck,₦2028
+Baxter Brocks,₦1984
+De witt Lottrington,₦1967.2
+Jobie Basili,₦1967
+Brad Gumb,₦1941.5
+Ancell Moretto,₦1938.4
+Jessi Calterone,₦1926
+Jo-anne Gobeau,₦1895
+Alvie Keming,₦1892
+Evanne Levens,₦1844
+Laura Gomar,₦1843
+Rosaline Wenderott,₦1841
+Katey Cadany,₦1840.2
+Karyn Creeghan,₦1827
+Bennett Gimenez,₦1823
+Von Boeter,₦1818.5
+Dennison Crosswaite,₦1814
+Lamond Douthwaite,₦1810.6
+Irwin Kirsche,₦1807.5
+Gavan Puttan,₦1797
+Cheryl Mantz,₦1787
+Jermaine Steers,₦1772
+Cindi McDuffy,₦1758.6
+Niall Selesnick,₦1749
+Sibyl Dunkirk,₦1731.4
+Ronnie Mesias,₦1727.2
+Shellysheldon Ellerman,₦1723.5
+Letisha Carrett,₦1692
+Sharl Bendson,₦1681.5
+Shea Mix,₦1653.6
+Thorvald Milliken,₦1651.5
+Mariann Mowat,₦1631
+Gare Mattiussi,₦1625
+Rose Shurrocks,₦1607
+Irvine Blenkin,₦1591.8
+Petey Probey,₦1581.5
+Hans Bucke,₦1571.2
+Marmaduke Worssam,₦1567.6
+Mabel Orrow,₦1562
+Xavier Filipic,₦1552.5
+Brendan Edgeller,₦1552
+Barny Fairweather,₦1542.6
+Demetria Le Estut,₦1514.4
+Michaella Perri,₦1506.4
+Sammy Gantlett,₦1496
+Susy Challoner,₦1494.5
+Yoshiko Tamblingson,₦1479.5
+Karlen McCaffrey,₦1424.6
+Addia Penwright,₦1406.5
+Amaleta Baltzar,₦1401.6
+Berna Dubery,₦1394.6
+Inge Creer,₦1381.2
+Wendel Malletratt,₦1353.2
+Kath Bletsoe,₦1314
+Cordelia Djuricic,₦1307
+Kelci Walkden,₦1141.8
+Mackenzie Hannis,₦1140
+Christopher Kezourec,₦1106.2
+Clemmie Hebblewaite,₦1082.6
+Leonidas Cavaney,₦1045
+Jacobo Lasham,₦1026.4
+Esmaria Denecamp,₦979.6
+Adi Seawright,₦971.8
+Cathrin Yanuk,₦882.4
+Bayard Gendricke,₦819.6
+Orlando Gorstidge,₦815
+Jarad Barbrook,₦624
+Chas Happel,₦618.8
+Stormy Church,₦597.6
+Irena Trousdell,₦590.6
+Mendel Gentsch,₦566.6
+ding total bonus paid to individuals.csv…]()
+
+
+●  Calculate the total amount to be paid to individual employees (salary inclusive of 
+bonus) 
+
+[UploadinName,Sum of Total Pay
+Cletus McGarahan,₦257467.5
+Anni Dinse,₦251307
+Chauncey Schild,₦246882
+Hiram Merkle,₦243789
+Minetta Parsons,₦238155.5
+Cathi Delgardo,₦229415.5
+Trix Lutsch,₦228760
+Krysta Elacoate,₦226691.6
+Althea Bronger,₦224331
+Kissiah Maydway,₦223566
+Bogey Hitcham,₦222957
+Easter Pyke,₦220064
+Joyce Esel,₦217988.5
+Mariette Daymont,₦209013
+Barbara-anne Kenchington,₦202469
+Shari Pickston,₦202272
+Cara Havers,₦201622.5
+Fred Dudeney,₦199552.5
+Merrilee Plenty,₦197145
+Foss Asquez,₦193599
+Sheff Gerdts,₦191694
+Aldrich Glenny,₦190848
+Katya Hundy,₦190296.5
+Angeline Christophersen,₦186921
+Georg Dinnage,₦185493
+Danica Nayshe,₦183864.5
+Inger Chapelhow,₦181266.5
+Beverie Moffet,₦174731
+Nerissa Kavanagh,₦172548.5
+Van Tuxwell,₦169470
+Crawford Scad,₦160336
+Joella Maevela,₦160041
+Gilles Jaquet,₦156415
+Murial Ickovici,₦155875
+Tabbatha Pickston,₦154886
+Andria Kimpton,₦152064
+Cristal Demangeot,₦151935
+Alida Welman,₦150199
+Addi Studdeard,₦150075
+Wyn Treadger,₦148758.5
+Murry Dryburgh,₦148500.5
+Antonino Forsdicke,₦146014
+Barnaby Farnall,₦142560
+Evangelia Gowers,₦142140
+Delinda Snozzwell,₦140721
+Hector Isard,₦140364
+Candy Aindrais,₦139908
+Ashien Gallen,₦138096
+Alexis Gotfrey,₦137364
+Hogan Iles,₦137016
+Michale Rolf,₦134184
+Alfred Peplay,₦133276
+Amery Ofer,₦133260
+Ianthe Sayre,₦132876
+Abigael Basire,₦132483
+Kai Ryder,₦131923
+Tiffani Mecozzi,₦131725
+Gamaliel Ewins,₦131626
+Emmye Corry,₦130836
+Rasla Fisby,₦130800
+Rhiamon Mollison,₦130746
+Arty Duigan,₦130320
+Giacobo Donke,₦130196
+Northrup Aires,₦130130
+Farrel Vanyatin,₦129932
+Valentia Etteridge,₦129910
+Rodrigo Congdon,₦129734
+Oby Sorrel,₦129668
+Saunders Blumson,₦129651
+Lishe Casemore,₦129624
+Garrick Hadwick,₦129591
+Jo Benoi,₦129272
+Kaine Padly,₦129240
+Colly Littledike,₦128865
+Judie Di Bernardo,₦128865
+Payton Pickervance,₦128722
+Curtice Advani,₦128591.5
+Bobina Teale,₦128579
+Sile Whorton,₦128541
+Darcy Brewitt,₦128337
+Hatti Vezey,₦127864
+Gearard Wixon,₦127428
+Honoria Cootes,₦127204
+Benny Karolovsky,₦126984
+Euell Willoughley,₦126960
+Gaultiero Have,₦126918
+Katerine Lohden,₦126599
+Rhianna McLeoid,₦126390
+Tracy Renad,₦126379
+Kelley Rounds,₦126291
+Baudoin Dummigan,₦125961
+Carmel Pancoust,₦125527.5
+Beatrix Schoales,₦125411
+Dyanne Strafen,₦125180
+Alic Bagg,₦125125
+Ewart Laphorn,₦125065.5
+Ignacio Delion,₦125059
+Ava Whordley,₦125052
+Edd MacKnockiter,₦124971
+Collen Dunbleton,₦124929
+Leslie Baruch,₦124788
+Cindee Saice,₦124032
+Chancey Dyos,₦123963
+Daron Biaggioli,₦123805
+Brodie Grimstead,₦123742.5
+Harwilll Domotor,₦123607
+Karon Oscroft,₦123332
+Ewart Hovel,₦122608.5
+Natalee Craiker,₦122353
+Abbie Tann,₦122346
+Granville Stetson,₦122309
+Burtie Moulden,₦122031
+Nickolai Artin,₦122001
+Herschel Wareham,₦121913
+Kit Battlestone,₦121779
+Roddy Speechley,₦121716
+Dov Thoresby,₦121264.5
+Gerrard Doorey,₦121220
+Faunie Sinton,₦120991.5
+Lane Monteaux,₦120978
+Nelli Schoolfield,₦120857
+Xylina Pargetter,₦120769
+Cecilio Sprankling,₦120681
+Aile Strathearn,₦120330
+Noll Forbear,₦120318
+Madelene Upcott,₦120109
+Doro Nolte,₦119955
+Danielle Johananoff,₦119944
+Vassili Flay,₦119867
+Pancho De Ortega,₦119736
+Julian Andrassy,₦119679
+Warner Carwithan,₦119448
+Jeane Bermingham,₦119319.6
+Westbrook Brandino,₦119301
+Clo Jimpson,₦119273.4
+Shelley Moncreiffe,₦119196
+Brig Dewi,₦119075
+Chrisy Kyme,₦119040
+Cecilia Marshalleck,₦118980
+Mahalia Larcher,₦118944
+Izzy Brisco,₦118888
+Tawnya Tickel,₦118840
+Ondrea Banfield,₦118569
+Lindy Guillet,₦118419
+Halimeda Kuscha,₦118198.5
+Benni Simounet,₦118105.8
+Lezlie Balmann,₦118083
+Israel Farndon,₦117942
+Efrem Mathonnet,₦117722
+Robbert Mandrier,₦117624
+Margot Royds,₦117623
+Reg MacMichael,₦117579
+Eilis Pavlasek,₦117493.8
+Theresita Chasmer,₦117337
+Pippy Roxby,₦117139
+Morten Dumphy,₦117054
+Shellysheldon Mahady,₦116983.8
+Faina Durand,₦116943
+Amitie Mawson,₦116500
+Thedrick Rogeon,₦116497.5
+Virge Garfield,₦116434.5
+Antone Tolmie,₦116361
+Axel Grigaut,₦116319
+Layton Kierans,₦116065.8
+Maritsa Marusic,₦116050
+Augusta Cheetham,₦116017
+Garwood Penhale,₦115968
+Kincaid Hellicar,₦115932
+Joana Bartocci,₦115874
+Meredith Rucklidge,₦115840
+Nathanial Brounfield,₦115632
+Carlin Demke,₦115542
+Nananne Gehringer,₦115280
+Gisella Mewe,₦115248
+Janene Hairsine,₦115247
+Reena McKernan,₦115225
+Oates Dinan,₦115148
+Wilone O'Kielt,₦114870
+Caro Chappel,₦114851
+Gayla Blackadder,₦114628.5
+Rafaelita Blaksland,₦114618
+Margy Elward,₦114037
+Dyna Doucette,₦113905
+Obidiah Westrope,₦113883
+Bordy Yatman,₦113872.5
+Marlie Charsley,₦113872.5
+Daryn Kniveton,₦113809.5
+Rosamond Fishe,₦113568
+William Reeveley,₦113127
+Jordain Sparkwill,₦113043
+Sarajane Peachey,₦112959
+Joey Keedwell,₦112812
+Inger Andriveaux,₦112465.5
+Gardy Grigorey,₦112444.5
+Duky Wallace,₦112354
+Freda Legan,₦112343
+Bari Toffano,₦112119
+Bev Lashley,₦112110
+Colby Reuven,₦111969
+Kayley Southwell,₦111837
+Alysa Wankling,₦111783
+Dorise Labat,₦111771
+Allyce Hincham,₦111562
+Audry Yu,₦111309
+Shana Bewly,₦111258
+Margarete Blasing,₦110970
+Mora Innett,₦110890.5
+Robinia Scholling,₦110803
+Minna Showler,₦110638.5
+Mick Titman,₦110596.5
+Aeriell Cuell,₦110455.8
+Shaylyn Ransbury,₦110407
+Cyrillus Garci,₦110396
+North Bertomeu,₦110145
+Hilliary Roarty,₦110008.5
+Bernie Gorges,₦109967
+Simon Kembery,₦109725
+Wilt Wayvill,₦109725
+Amandy Jope,₦109593
+Granny Spencelayh,₦109406
+Tadio Audritt,₦109395
+Cherlyn Barter,₦109326
+Erin Androsik,₦109192.5
+Mella Northam,₦109120
+Ruthanne Beadnell,₦108790.5
+Rhody Odhams,₦108780
+Anni Izzard,₦108664.5
+Leslie Cardoso,₦108507
+Peria Revey,₦108402
+Maggie Ruberti,₦108340
+Pierson Measham,₦108318
+Helaine Lyddy,₦108265.5
+Toby Brodhead,₦108240
+Felipe Parkman,₦108180
+Filmore Fitzhenry,₦108170
+Vernor Atyea,₦108076.5
+Nanice Boatwright,₦107987.4
+Anjela Spancock,₦107811
+Alyosha Riquet,₦107808
+Richy Gray,₦107796
+Mata Fishley,₦107646
+Gwenore Scotchmer,₦107395.8
+Ronnie Sinyard,₦106848
+Jessica Burditt,₦106832
+Eleonore Airdrie,₦106821
+Floria Olivia,₦106575
+Constantino Espley,₦106480
+Antonetta Coggeshall,₦106425
+Myrilla Mercik,₦106326
+Purcell Le Pine,₦106281
+Sharity Brands,₦106161.6
+Erv Havill,₦106080
+Maximo Ungerecht,₦105875
+Ches Bonnell,₦105660
+Loren Rettie,₦105600
+Sandy Cadden,₦105578
+Fanchon Furney,₦105545
+Collin Jagson,₦105441
+Janina Wolverson,₦104664
+Adela Dowsett,₦104522
+Pennie Walmsley,₦104470
+Lindi Morfey,₦104443.5
+Larry Pioch,₦104307
+Jeannie Petracco,₦104302
+Cindi Stratten,₦104160
+Fidela Dowey,₦104088
+Taddeo Jovis,₦103677
+Ede Mignot,₦103572
+Aurelia Stanners,₦103561.5
+Emanuel Beldan,₦103477
+Appolonia Snook,₦103268
+Nicola Kiely,₦103114
+Diarmid Alman,₦103110
+Pate Beardsley,₦103056
+Damien Netley,₦103015.5
+Bette-ann Leafe,₦102850
+Lorrie Derycot,₦102597
+Clarine Shambrooke,₦102476
+Karita Vasyanin,₦102388
+Mick Tanguy,₦102270
+Cecilla Northen,₦102157
+Hinda Label,₦101970
+Kakalina Stanaway,₦101871
+Ardyce Eacott,₦101717
+Jim Perrygo,₦101629.5
+Twila Roantree,₦101451
+Tadio Dowdle,₦101123
+Torrance Collier,₦100947
+Dayle O'Luney,₦100512.5
+Jillana Gabbitis,₦100496
+Madge McCloughen,₦100441
+Roselle Wandrach,₦100441
+De witt Lottrington,₦100327.2
+Michaeline Capehorn,₦100107
+Konstanze Wyleman,₦99880
+Leela Eckart,₦99374
+Win Arthurs,₦99360
+Charline Husset,₦99256.5
+Evyn Fyrth,₦99088
+Kora Allebone,₦98970
+Ancell Moretto,₦98858.4
+Margit Kunze,₦98721
+Calvin O'Carroll,₦98679
+Rey Chartman,₦98658
+Shela Goade,₦98626.5
+Issie Crippes,₦98064
+Eleni O'Quin,₦97922
+Caty Janas,₦97870.5
+Freddy Linford,₦97786.5
+Hobie Stockbridge,₦97587
+Fairfax Wallsam,₦97449
+Niko MacGille,₦97273
+Stefa Eggleston,₦97218
+Oona Donan,₦97196
+Fedora Graffin,₦97125
+Dulsea Folkes,₦96968
+Giffer Berlin,₦96957
+Marjie Bamford,₦96924
+Mathian MacMeeking,₦96879
+Aluin Churly,₦96560
+Bebe Pollicott,₦96514
+Fidelio Rigmond,₦96370
+Emmanuel Westrey,₦96140
+Patricia Dwelly,₦96075
+Ambrosio Daniely,₦96072
+Rogers Rosenthaler,₦95749.5
+Kienan Epinay,₦95676
+Hobard Benninger,₦95612
+Rosco Cogley,₦95524
+Charmane Heistermann,₦95216
+Riccardo Hagan,₦95216
+Sissy Muehle,₦95117
+Barri Teacy,₦94864
+Christoph Stretton,₦94752
+Reube Sushams,₦94636.5
+Melisa Knott,₦94611
+Adolph Hartin,₦94458
+Philis Rowlstone,₦94314
+Cyril Medford,₦94292
+Sisely Gatsby,₦94237
+Marcellina Kitt,₦94200
+Marco Wooland,₦94083
+Winny Millam,₦94050
+Matias Cormack,₦94006
+Saundra O'Connel,₦93863
+Katey Cadany,₦93850.2
+Marga Lorenzo,₦93828
+Shanon Deverell,₦93816
+Haven Belward,₦93576
+Beatriz Bateson,₦93544.5
+Iain Wiburn,₦93236
+Vaughn Carvill,₦93225
+Patti Dradey,₦93214
+Jeane Blaszczak,₦93030
+Verney Sloegrave,₦92950
+Vasily MacVanamy,₦92917
+Phylys Benitez,₦92862
+Manolo Gasnell,₦92799
+Dennison Crosswaite,₦92514
+Leilah Yesinin,₦92450
+Lamond Douthwaite,₦92340.6
+Virginia McConville,₦92280
+Mickey Pybus,₦92242.5
+Agnes Collicott,₦92125
+Reggie Taylerson,₦91990.5
+Edgard Irving,₦91654.5
+Sharron Petegree,₦91654.5
+Tallie Chaikovski,₦91509
+Skip Morkham,₦91498
+Jacklyn Andrioletti,₦91339.5
+Torey Rosell,₦90937
+Quintina Kilgannon,₦90814.5
+Judi Cosgriff,₦90709.5
+Tarrah Wordsworth,₦90657
+Lissy McCoy,₦90541.5
+Merrel Blind,₦90332
+Adolph McNalley,₦90216
+Mick Spraberry,₦90174
+Louise Lamming,₦90149.5
+Evanne Sheryn,₦90090
+Lark Ironmonger,₦90069
+Cindi McDuffy,₦89688.6
+Kelly Corkitt,₦89523
+Cleveland Pottiphar,₦89520
+Jolynn Behnecken,₦89439
+Michael Sidry,₦89386
+Alikee Jecock,₦89250
+Issy McLevie,₦89187
+Josie Barnson,₦88932
+Fancy Bonin,₦88914
+Romona Melody,₦88690
+Van Ruseworth,₦88671
+Adella Hartshorne,₦88494
+Marni Jull,₦88410
+Fonzie O'Shea,₦88396
+Sibyl Dunkirk,₦88301.4
+Aileen McCritchie,₦88187
+Ronnie Mesias,₦88087.2
+Aida Bleacher,₦87810
+Codie Gaunson,₦87769.5
+Durand Backhouse,₦87570
+Kellsie Waby,₦87527
+Royal Nowakowska,₦87527
+Martelle Brise,₦87472
+Shirlene Argo,₦87210
+Marissa Infante,₦86724
+Gray Seamon,₦86394
+Nonah Bissell,₦86352
+Isadora Maunsell,₦86339
+Letisha Carrett,₦86292
+Allene Gobbet,₦86229
+Dewie Stodart,₦85822
+Fidela Artis,₦85822
+Grady Crosgrove,₦85701
+Phillipp Nekrews,₦85596
+Maisie Shotboulte,₦85452
+Denni Wiggans,₦85281
+Krystal Lambswood,₦85280
+Lia Lurner,₦84986
+Itch Tinklin,₦84821
+Abramo Labbez,₦84700
+Yanaton Wooster,₦84623
+Linell Compfort,₦84528
+Shea Mix,₦84333.6
+Shayne Stegel,₦84324
+Liane Bedburrow,₦84282
+Dane Wudeland,₦84031.5
+Shelby Buckland,₦84029
+Dorolice Farry,₦83930
+Gardy Eckersall,₦83632.5
+Lisle Danahar,₦83589
+Shari McNee,₦83468
+Derk Bosson,₦83457
+Jordain Cyster,₦83457
+Ali Roubert,₦83352
+Petronella Marusik,₦83160
+Brit Hamnett,₦83094
+Camilla Castle,₦83028
+Grady Rochelle,₦82992
+Yves Clunie,₦82984
+Elia Cockton,₦82808
+Ansley Gounel,₦82646
+Ruby Cracie,₦82645.5
+Melodie Torresi,₦82599
+Anne-corinne Daulby,₦82572
+Faun Rickeard,₦82412
+Adrianne Gave,₦82362
+Karee Ruslinge,₦82300
+Gigi Bohling,₦82005
+Enrichetta Mowles,₦81829
+Martita Beaumont,₦81790
+Cecilla Joselevitch,₦81732
+Leena Bruckshaw,₦81708
+Vlad Strangeway,₦81627
+Ebonee Roxburgh,₦81540
+Jobey Boneham,₦81411
+Issiah Cradick,₦81380
+Caro Hainsworth,₦81343.5
+Irvine Blenkin,₦81181.8
+Janean Gostage,₦81150
+Joli Jodrelle,₦80955
+Lonny Caen,₦80955
+Meryl Waggatt,₦80913
+Rodina Drinan,₦80902.5
+Renaldo Thomassin,₦80696
+Ingunna Wainscoat,₦80564
+Millard Brakewell,₦80388
+Yvette Bett,₦80136
+Hans Bucke,₦80131.2
+Marline Wahncke,₦80124
+Meara Darrington,₦79999.5
+Marmaduke Worssam,₦79947.6
+Shay Chasney,₦79805
+Lil Ibberson,₦79716
+Orton Livick,₦79632
+Genovera Ghost,₦79376
+Jessica Callcott,₦79224
+Delphine Jewis,₦79002
+Billie Croucher,₦78991.5
+Corinna Griffiths,₦78760.5
+Naoma Cruse,₦78694
+Hali Behnecke,₦78684
+Barny Fairweather,₦78672.6
+Frasier Straw,₦78507
+Bren Absolon,₦78445.5
+Craggie Whistlecraft,₦78364
+Grover Cooksey,₦78351
+Avigdor Karel,₦78331
+Justino Chapiro,₦78133
+Conchita Soden,₦78130.5
+Christos Wintle,₦78078
+Sabina Scorrer,₦78023
+Ambros Murthwaite,₦77671
+Putnem Manchester,₦77396
+Brose MacCorkell,₦77271
+Andrea Penfold,₦77253
+Demetria Le Estut,₦77234.4
+Lea Chaplin,₦77164.5
+Jolynn Lumbley,₦77022
+Cornie Arstall,₦76967
+Michaella Perri,₦76826.4
+Thedrick Bothwell,₦76736
+Myer McCory,₦76681
+Jedd Moretto,₦76464
+Sammy Gantlett,₦76296
+Kristofor Powner,₦76274
+Lincoln Cord,₦76272
+Trey Jurges,₦75978
+Billi Fellgate,₦75878
+Violetta Vial,₦75867
+Hyacinthie Braybrooke,₦75790
+Alexandros Rackley,₦75730
+Bert Yaakov,₦75642
+Gilda Richen,₦75516
+Vic Radolf,₦75336
+Lorain Tew,₦75169.5
+Marcia Muldrew,₦75085.5
+Joyce Leyband,₦75020
+Cull Nannetti,₦74899
+Barr Faughny,₦74811
+Jessika Jaycocks,₦74778
+Anjanette Ferre,₦74756
+Lucias Minico,₦74756
+Aindrea Lenormand,₦74739
+Husein Augar,₦74701
+Myrle Prandoni,₦74640
+Frederik Dartan,₦74508
+Alicea Pudsall,₦74393
+Carolyn Attack,₦74298
+Ardella Dyment,₦74182.5
+Nerita Mycock,₦74173
+Helene Bouts,₦73899
+Pearla Beteriss,₦73405.5
+Dominic Ortler,₦73271
+Gideon Hehir,₦73161
+Addy Pimblett,₦73106
+Radcliffe Fairpool,₦72912
+Orran Gritskov,₦72700
+Karlen McCaffrey,₦72654.6
+Gino Groome,₦72528
+Bethanne Leicester,₦72450
+Gradey Litton,₦72334.5
+Joaquin McVitty,₦72303
+Melva Jickells,₦72240
+Kerwin Blakely,₦71904
+Timmi Durran,₦71851.5
+Garwin Peasegood,₦71631
+Dean Biggam,₦71570
+Nollie Courteney,₦71490
+Amaleta Baltzar,₦71481.6
+Nicole Blowfelde,₦71472
+Freddie Johnikin,₦71456
+Shannen Crittal,₦71442
+Berna Dubery,₦71124.6
+Delora Arendt,₦71001
+Jori Ashleigh,₦70697
+Inge Creer,₦70441.2
+Lion Adcock,₦70081
+Vere Kulic,₦69898.5
+Archibaldo Denny,₦69740
+Brien Boise,₦69720
+Daphne Francillo,₦69707
+Yves Pawlik,₦69516
+William Coveny,₦69447
+Corina Triner,₦69405
+Archibald Dyzart,₦69322
+Marney O'Breen,₦69216
+Wendel Malletratt,₦69013.2
+Desi Peniman,₦68398
+Nessi Delves,₦68196
+Halette Yesenev,₦68112
+Letizia Hasselby,₦67969
+Blaire Ruckman,₦67870
+Doe Clubley,₦67820
+Max Shower,₦67510
+Aubert Wedmore.,₦67463
+Evangelina Lergan,₦67331
+Chelsea Itzak,₦67210
+Tamara Couvet,₦67155
+Duffie Ibel,₦67111
+Kath Bletsoe,₦67014
+Beryl Burnsyde,₦66982.5
+Felicdad Heibel,₦66880
+Felice McMurty,₦66870
+Cordelia Djuricic,₦66657
+Egor Minto,₦66622.5
+Felita Whitloe,₦66622.5
+Marlowe Constantine,₦66616
+Alexine Portail,₦66363
+Sandi Labat,₦66154
+Jehu Rudeforth,₦66143
+Effie Vasilov,₦66011
+Dael Bugge,₦65824.5
+Juanita Trembey,₦65736
+Pembroke Siflet,₦65505
+My Hanscome,₦65373
+Lilyan Klimpt,₦64856
+Tammi Lackham,₦64774.5
+Aurelea Devitt,₦64724
+Rois Garrigan,₦64501.5
+Latisha Jolly,₦64240
+Berenice Osbaldstone,₦64108
+Georgie Caress,₦64086
+Nessy Baskwell,₦63943
+Mord Cromblehome,₦63701
+Corabel Luberto,₦63602
+Mallorie Waber,₦63598.5
+Eberto William,₦63525
+Fax Scotland,₦63404
+Benoite Ackermann,₦62788
+Millie Fiveash,₦62788
+Carlene Torry,₦62590.5
+Shaylah Owbrick,₦62590
+Berny Bastide,₦62381
+Peggi Bullas,₦62282
+Larissa Ingledow,₦62280
+Gerald Caple,₦62265
+Caresa Christer,₦62223
+Daisie Dahlman,₦61990
+Konstantin Timblett,₦61875
+Gisela Wille,₦61792.5
+Sarajane Scourge,₦61771.5
+Glennis Fussen,₦61288.5
+Daven Smout,₦60960
+Farris Ditchfield,₦60931.5
+Bryana Loyns,₦60808
+Alta Kaszper,₦60467
+Aleksandr Botha,₦60260
+Laney Renne,₦60217.5
+Ignacius Losel,₦59808
+Oran Buxcy,₦59713.5
+Gabie Millichip,₦59712
+Ludovika Plaice,₦59670
+Charmaine Howie,₦59650.5
+Verla Timmis,₦59554
+Callie Duckels,₦59136
+Loren Bentote,₦59094
+Dolley Grayley,₦58776
+Malory Biles,₦58740
+Luca Wolstenholme,₦58498
+Jill Shipsey,₦58256
+Kelci Walkden,₦58231.8
+Mackenzie Hannis,₦58140
+Cyndia Skedge,₦57893
+Yasmeen Klimkiewich,₦57768
+Onofredo Hassan,₦57442
+Zebulon Allmen,₦57354
+Claudetta Petherick,₦57246
+Grier Kidsley,₦56980
+Caritta Searl,₦56710.5
+Cly Vizard,₦56672
+Thekla Lynnett,₦56647.5
+Amii Elms,₦56616
+Brigid Jeffrey,₦56605.5
+Christopher Kezourec,₦56416.2
+Hoyt D'Alesco,₦56217
+Zach Polon,₦56217
+Tatum Hush,₦55902
+Genevra Friday,₦55495
+Silva Monte,₦55450.5
+Daisie McNeice,₦55341
+Kaye Crocroft,₦55240.5
+Wyatt Clinch,₦55219.5
+Clemmie Hebblewaite,₦55212.6
+Niles Mahomet,₦55022
+Caron Kolakovic,₦54912
+Novelia Pyffe,₦54883.5
+Dino Wooderson,₦54726
+Adelina Cheeseman,₦54612
+Rory Ravenscroftt,₦54540
+Jakob Philippe,₦54505.5
+Moore Gligoraci,₦54483
+Patience Noot,₦54472
+Lek Scamaden,₦54453
+Packston Joanic,₦54453
+Cathyleen Hurch,₦54329
+Miguel Woolner,₦54327
+Yolande O'Dare,₦54232.5
+Pippy Shepperd,₦53820
+Trace Sidsaff,₦53760
+Ollie Schirak,₦53559
+Isa Mogie,₦53497.5
+Sly Cowley,₦53383
+Leonidas Cavaney,₦53295
+Stephan Bussel,₦53119
+Jannel Labb,₦52701
+Eddy Stolze,₦52536
+Griz Thorington,₦52437
+Jacobo Lasham,₦52346.4
+Carry Loblie,₦52305
+Forester Feakins,₦52019
+Emory Whitten,₦52000
+Tamar MacGilfoyle,₦51997
+Seward Kubera,₦51996
+Isidora Guido,₦51780
+Eldredge MacClure,₦51689
+Quentin Ferraresi,₦51450
+Gunar Cockshoot,₦51397.5
+Milton Lilie,₦51117
+Francoise Godbold,₦50985
+Candace Hanlon,₦50908
+Mickie Dagwell,₦50860
+Angela Bangley,₦50810
+Andrea Becker,₦50776
+Madlen Ashburner,₦50688
+Romona Dimmne,₦50662.5
+Luce Beentjes,₦50589
+Jan Morforth,₦50578.5
+Barney Bonafant,₦50463
+Corny Linturn,₦50358
+Giselbert Newlands,₦50032.5
+L;urette Bontein,₦50032.5
+Esmaria Denecamp,₦49959.6
+Dell Molloy,₦49728
+Adi Seawright,₦49561.8
+Nani Brockley,₦49350
+Tammy Backson,₦49302
+Elliot Tuplin,₦48983
+Townie Dongall,₦48630
+Archibald Filliskirk,₦48480
+Frasquito Mosley,₦48090
+Timmy Brenston,₦48070
+Courtney Given,₦47960
+Nicolis Winspire,₦47932.5
+Cullie Bourcq,₦47869.5
+Drusy MacCombe,₦47861
+Florinda Crace,₦47785.5
+Trudie Couch,₦47421
+Willi Vasey,₦47322
+Josepha Keningham,₦47289
+Ulick Maingot,₦47102
+Hartwell Pratchett,₦47003
+Dotty Strutley,₦46178
+Rudyard Tomsa,₦46095
+Cathi Gillbee,₦45969
+Eward Astlett,₦45837
+Ryon Baroch,₦45769.5
+Georgianne Archbutt,₦45600
+Hildagard Reece,₦45342
+Pedro Carluccio,₦45254
+Oliy Feeney,₦45118.5
+Lanie Gatlin,₦45110
+Norrie Grahl,₦45097.5
+Cathrin Yanuk,₦45002.4
+Reidar Skechley,₦44847
+Korney Bockings,₦44583
+Collette Blackaller,₦44499
+Layton Crayden,₦44495
+Archaimbaud Pinchin,₦44297
+Lamar Blewitt,₦44005.5
+Devinne Tuny,₦43967
+Loralyn Bruton,₦43956
+Jaime Dowe,₦43934
+Camille Baldinotti,₦43785
+Nicol Giacomi,₦43725
+Dionne Garrish,₦43680
+Debera Gow,₦43670
+Crissie Cordel,₦43648.5
+Monti Burdus,₦43615
+Stan Tolliday,₦43494
+Aloisia Minto,₦43491
+Shelbi Aldin,₦42955.5
+Maggee Stiggles,₦42823
+Lanny Beaney,₦42603
+Codi Beck,₦42588
+Magnum Locksley,₦42310
+Kay Edling,₦42163
+Hedwiga Ingarfield,₦42075
+Osborn Pawle,₦41833
+Bayard Gendricke,₦41799.6
+Baxter Brocks,₦41664
+Selby Hacker,₦41580
+Orlando Gorstidge,₦41565
+Kikelia Ellor,₦41544
+Jobie Basili,₦41307
+Aeriela Aickin,₦41305
+Isaak Rawne,₦41096
+Steven Labat,₦40821
+Brad Gumb,₦40771.5
+Floyd Cowgill,₦40766
+Maximo Guirard,₦40722
+Carolin Fieldstone,₦40612
+Jessi Calterone,₦40446
+Joshia Farris,₦40414
+Nolan Tortis,₦40381
+Jamesy O'Ferris,₦40205
+Alisha Bloschke,₦40128
+Jo-anne Gobeau,₦39795
+Dare Tully,₦39780
+Alvie Keming,₦39732
+Bili Sizey,₦39644
+Roanne Phizacklea,₦39589
+Florie Tortoise,₦39523
+Jamal Beagen,₦39413
+Sarene Creeboe,₦39413
+Blythe Clipston,₦39237
+Evanne Levens,₦38724
+Laura Gomar,₦38703
+Rosaline Wenderott,₦38661
+Shaun Kyrkeman,₦38511
+Karyn Creeghan,₦38367
+Juditha Hatherleigh,₦38313
+Bennett Gimenez,₦38283
+Emmeline Bestwerthick,₦38240
+Von Boeter,₦38188.5
+Lincoln Greatex,₦38115
+Irwin Kirsche,₦37957.5
+Gavan Puttan,₦37737
+Cheryl Mantz,₦37527
+Gretchen Callow,₦37312
+Deck McCallion,₦37279
+Jermaine Steers,₦37212
+Hedvige Stelfox,₦37180
+Aretha Ettridge,₦37136
+Alford Gerardi,₦37130
+Pauletta Falkus,₦36916
+Sandie Anthonies,₦36751
+Niall Selesnick,₦36729
+Janaya MacGinlay,₦36355
+Shellysheldon Ellerman,₦36193.5
+Kingsley Hagard,₦36091
+Abran Danielsky,₦35992
+Adey Ryal,₦35750
+Erv Balmann,₦35604
+Austine Littlewood,₦35497
+Estell Kingsland,₦35409
+Sharl Bendson,₦35311.5
+Anabal Cooke,₦35112
+Garey Bird,₦35013
+Bendite Bloan,₦35002
+Wald Bountiff,₦34764
+Thorvald Milliken,₦34681.5
+Reinald Franken,₦34644
+Ottilie Vittel,₦34500
+Elwira Lyddiard,₦34408
+Ginger Myott,₦34287
+Mariann Mowat,₦34251
+Gare Mattiussi,₦34125
+Ernestus O'Hengerty,₦34122
+Pooh Splevins,₦34122
+Monroe Hendrickx,₦34080
+Rasia Fryatt,₦33960
+Pyotr Lightewood,₦33840
+Rose Shurrocks,₦33747
+Ferrell Skepper,₦33275
+Petey Probey,₦33211.5
+Koral Gerriet,₦33088
+Doralyn Segar,₦33000
+Mable Phythian,₦33000
+Toby Micklewright,₦32980
+Mirna Etoile,₦32967
+Mabel Orrow,₦32802
+Bryant Scamp,₦32791
+Xavier Filipic,₦32602.5
+Brendan Edgeller,₦32592
+Franchot Crocken,₦32571
+Mallory Goldsberry,₦32571
+Tyson Prescote,₦32362
+Penni Patemore,₦32263
+Tris Hynard,₦31988
+Jarad Barbrook,₦31824
+Roth Bourget,₦31757
+Chas Happel,₦31558.8
+Carolina Blumsom,₦31438
+Susy Challoner,₦31384.5
+Hephzibah Summerell,₦31141
+Yoshiko Tamblingson,₦31069.5
+Stormy Church,₦30477.6
+Irena Trousdell,₦30120.6
+Addia Penwright,₦29536.5
+Hannis January,₦29530
+Major O'Cahsedy,₦29490
+Mendel Gentsch,₦28896.6
+Edi Hofton,₦28160
+g sum total of amounty to be paid employees including bonuces.csv…]()
+
+#● Total amount to be paid out per region and company-wide
+
+[amount to be paid out by region.csv](https://github.com/user-attachments/files/21071243/amount.to.be.paid.out.by.region.csv)
+Salary Band,Sum of BONUS,Location
+$100K+,₦627129.9,Abuja
+$20K-$30K,₦24745.5,Abuja
+$30K-$40K,₦99491,Abuja
+$40K-$50K,₦175882,Abuja
+$50K=$60K,₦169022.5,Abuja
+$60K-$70K,₦210337,Abuja
+$70K-$80K,₦212546.8,Abuja
+$80K-$90K,₦268343.6,Abuja
+$90K-$100K,₦226834.8,Abuja
+$100K+,₦689770,Kaduna
+$20K-$30K,₦24060.6,Kaduna
+$30K-$40K,₦117415.8,Kaduna
+$40K-$50K,₦123932,Kaduna
+$50K=$60K,₦178296.5,Kaduna
+$60K-$70K,₦204691.8,Kaduna
+$70K-$80K,₦287824.3,Kaduna
+$80K-$90K,₦270229.6,Kaduna
+$90K-$100K,₦265710,Kaduna
+$100K+,₦481953.6,Lagos
+$20K-$30K,₦14380.7,Lagos
+$30K-$40K,₦62717,Lagos
+$40K-$50K,₦105391.9,Lagos
+$50K=$60K,₦69270.9,Lagos
+$60K-$70K,₦148602.2,Lagos
+$70K-$80K,₦201310.6,Lagos
+$80K-$90K,₦204058.1,Lagos
+$90K-$100K,₦175012.6,Lagos
